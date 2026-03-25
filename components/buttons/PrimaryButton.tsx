@@ -1,5 +1,5 @@
 import { Text, TouchableOpacity, View } from "react-native";
-
+import { ms } from "react-native-size-matters";
 type PrimaryButtonProps = {
   text: string;
 };
@@ -7,9 +7,18 @@ type PrimaryButtonProps = {
 export default function PrimaryButton({ text }: PrimaryButtonProps) {
   return (
     <View>
-      <TouchableOpacity className="bg-moss" activeOpacity={0.7}>
+      <TouchableOpacity
+        className="bg-moss items-center"
+        activeOpacity={0.7}
+        style={{ padding: ms(10, 0.5), borderRadius: ms(15, 0.3) }}
+      >
         <View>
-          <Text>{text}</Text>
+          <Text
+            className="text-white font-nunito"
+            style={{ fontSize: ms(18, 0.5) }}
+          >
+            {text}
+          </Text>
         </View>
       </TouchableOpacity>
     </View>

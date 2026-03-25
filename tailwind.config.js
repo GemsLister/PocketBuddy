@@ -4,7 +4,13 @@ module.exports = {
   content: ["./App.tsx", "./components/**/*.{js,jsx,ts,tsx}"],
   presets: [require("nativewind/preset")],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        nunito: "Nunito-Regular",
+        "nunito-semibold": "Nunito-SemiBold",
+        "nunito-bold": "Nunito-Bold",
+      },
+    },
   },
   plugins: [],
 };

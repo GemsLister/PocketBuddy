@@ -14,12 +14,25 @@ export default function LoginScreen() {
       >
         <View>
           <View className="items-center">
-            <Text
-              className="font-nunito-bold text-leaf"
-              style={{ fontSize: ms(50, 0.1) }}
-            >
-              PocketBuddy
-            </Text>
+            <View className="flex-row">
+              <View>
+                <Text
+                  className="font-nunito-bold text-leaf"
+                  style={{ fontSize: ms(50, 0.1) }}
+                >
+                  Pocket
+                </Text>
+              </View>
+              <View>
+                <Text
+                  className="font-nunito-bold text-moss"
+                  style={{ fontSize: ms(50, 0.1) }}
+                >
+                  Buddy
+                </Text>
+              </View>
+            </View>
+
             <View className="flex-row gap-1" style={{ marginVertical: vs(10) }}>
               <View>
                 <Text

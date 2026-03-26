@@ -14,7 +14,7 @@ export default function PrimaryButton({ text }: PrimaryButtonProps) {
       >
         <View>
           <Text
-            className="text-white font-nunito"
+            className="text-white font-nunito-bold"
             style={{ fontSize: ms(18, 0.5) }}
           >
             {text}

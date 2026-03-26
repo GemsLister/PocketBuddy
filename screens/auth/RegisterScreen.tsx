@@ -1,12 +1,15 @@
-import { Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-
+import AuthContainer from "@/components/container/AuthContainer";
+import TextInputs from "@/components/inputs/TextInputs";
+import { View } from "react-native";
+import { vs } from "react-native-size-matters";
 export default function RegisterScreen() {
   return (
-    <SafeAreaView>
-      <View>
-        <Text>HI</Text>
+    <AuthContainer text="Create Account">
+      <View style={{ gap: vs(10) }}>
+        <TextInputs placeholder="Name" secure={false} />
+        <TextInputs placeholder="Email" secure={false} />
+        <TextInputs placeholder="Password" secure={true} />
       </View>
-    </SafeAreaView>
+    </AuthContainer>
   );
 }

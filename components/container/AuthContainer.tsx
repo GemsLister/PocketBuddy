@@ -1,20 +1,22 @@
+import { Href } from "expo-router";
 import type { ReactNode } from "react";
 import { KeyboardAvoidingView, Platform, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ms, vs } from "react-native-size-matters";
 import PrimaryButton from "../buttons/PrimaryButton";
-
 type AuthContainerProps = {
   children: ReactNode;
   label: string;
   text: string;
   screenTitle: string;
+  link: Href;
 };
 export default function AuthContainer({
   children,
   label,
   text,
   screenTitle,
+  link,
 }: AuthContainerProps) {
   return (
     <SafeAreaView
@@ -50,7 +52,7 @@ export default function AuthContainer({
             </Text>
           </View>
           {children}
-          <PrimaryButton text={label} />
+          <PrimaryButton text={label} link={link} />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

@@ -1,7 +1,10 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
+import { TouchableOpacity } from "react-native";
 import { ms } from "react-native-size-matters";
 export default function AuthRootLayout() {
+  const router = useRouter();
   const [fontsLoaded] = useFonts({
     "Nunito-Regular": require("@/assets/fonts/Nunito/Nunito-Regular.ttf"),
     "Nunito-SemiBold": require("@/assets/fonts/Nunito/Nunito-SemiBold.ttf"),
@@ -14,7 +17,7 @@ export default function AuthRootLayout() {
       <Stack.Screen
         name="register"
         options={{
-          title: "Register",
+          title: "",
           headerShadowVisible: false,
           headerTransparent: true,
           headerTitleStyle: {
@@ -22,6 +25,15 @@ export default function AuthRootLayout() {
             fontWeight: "bold",
             fontSize: ms(25, 0.7),
           },
+          headerLeft: () => (
+            <TouchableOpacity onPress={() => router.back()}>
+              <Ionicons
+                name="arrow-back"
+                size={ms(28, 0.5)} // This allows you to scale the arrow size
+                color="#385a41" // Specifically sets the arrow color
+              />
+            </TouchableOpacity>
+          ),
         }}
       />
     </Stack>

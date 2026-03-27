@@ -36,7 +36,7 @@ export default function LoginScreen() {
               <View>
                 <Text
                   className="font-nunito-semibold text-moss"
-                  style={{ fontSize: ms(15, 0.5) }}
+                  style={{ fontSize: ms(16, 0.5) }}
                 >
                   Don't have an account?
                 </Text>
@@ -46,7 +46,7 @@ export default function LoginScreen() {
                 <Link href={"/(auth)/register"} asChild>
                   <Text
                     className="font-nunito-bold text-moss"
-                    style={{ fontSize: ms(15, 0.5) }}
+                    style={{ fontSize: ms(16, 0.5) }}
                   >
                     Register
                   </Text>
@@ -79,7 +79,10 @@ export default function LoginScreen() {
               <TextInputs placeholder="Email" secure={false} />
               <TextInputs placeholder="Password" secure={true} />
               <Buttons.PrimaryButton text={"Login"} />
-              <Buttons.SecondaryButton text={"Forgot Password"} />
+              <Buttons.SecondaryButton
+                text={"Forgot Password"}
+                link={"/(auth)/forgotPassword"}
+              />
             </View>
           </View>
         </View>

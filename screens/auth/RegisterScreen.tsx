@@ -8,6 +8,7 @@ export default function RegisterScreen() {
       label="Create Account"
       screenTitle="Let's Get Started!"
       text="Enter your personal details"
+      link={"/"}
     >
       <View style={{ gap: vs(10) }}>
         <TextInputs placeholder="Name" secure={false} />

@@ -14,28 +14,30 @@ export default function AuthRootLayout() {
   return (
     <Stack>
       <Stack.Screen name="login" options={{ headerShown: false }} />
-      <Stack.Screen
-        name="register"
-        options={{
-          title: "",
-          headerShadowVisible: false,
-          headerTransparent: true,
-          headerTitleStyle: {
-            fontFamily: "Nunito-Bold",
-            fontWeight: "bold",
-            fontSize: ms(25, 0.7),
-          },
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => router.back()}>
-              <Ionicons
-                name="arrow-back"
-                size={ms(28, 0.5)} // This allows you to scale the arrow size
-                color="#385a41" // Specifically sets the arrow color
-              />
-            </TouchableOpacity>
-          ),
-        }}
-      />
+      {["register", "forgotPassword"].map((names) => (
+        <Stack.Screen
+          name={names}
+          options={{
+            title: "",
+            headerShadowVisible: false,
+            headerTransparent: true,
+            headerTitleStyle: {
+              fontFamily: "Nunito-Bold",
+              fontWeight: "bold",
+              fontSize: ms(25, 0.7),
+            },
+            headerLeft: () => (
+              <TouchableOpacity onPress={() => router.back()}>
+                <Ionicons
+                  name="arrow-back"
+                  size={ms(28, 0.5)} // This allows you to scale the arrow size
+                  color="#385a41" // Specifically sets the arrow color
+                />
+              </TouchableOpacity>
+            ),
+          }}
+        />
+      ))}
     </Stack>
   );
 }

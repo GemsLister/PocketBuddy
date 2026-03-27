@@ -5,8 +5,9 @@ import { vs } from "react-native-size-matters";
 export default function RegisterScreen() {
   return (
     <AuthContainer
-      text="Create Account"
-      screenTitle="Enter Your Personal Details"
+      label="Create Account"
+      screenTitle="Let's Get Started!"
+      text="Enter your personal details"
     >
       <View style={{ gap: vs(10) }}>
         <TextInputs placeholder="Name" secure={false} />

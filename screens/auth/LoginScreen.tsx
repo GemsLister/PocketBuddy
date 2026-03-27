@@ -1,5 +1,4 @@
-import GoogleButton from "@/components/buttons/GoogleButton";
-import PrimaryButton from "@/components/buttons/PrimaryButton";
+import * as Buttons from "@/components/buttons/buttonsIndex";
 import TextInputs from "@/components/inputs/TextInputs";
 import { Link } from "expo-router";
 import { KeyboardAvoidingView, Platform, Text, View } from "react-native";
@@ -65,7 +64,7 @@ export default function LoginScreen() {
             }}
           >
             <View style={{ marginBottom: ms(10, 0.8), gap: ms(15, 0.5) }}>
-              <GoogleButton />
+              <Buttons.GoogleButton />
               <View className="items-center">
                 <Text
                   className="font-nunito-semibold text-moss"
@@ -79,7 +78,8 @@ export default function LoginScreen() {
             <View style={{ gap: vs(10), paddingBottom: vs(20) }}>
               <TextInputs placeholder="Email" secure={false} />
               <TextInputs placeholder="Password" secure={true} />
-              <PrimaryButton text={"Login"} />
+              <Buttons.PrimaryButton text={"Login"} />
+              <Buttons.SecondaryButton text={"Forgot Password"} />
             </View>
           </View>
         </View>

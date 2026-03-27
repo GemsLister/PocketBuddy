@@ -6,6 +6,7 @@ export default function ForgotPasswordScreen() {
       label="Continue"
       screenTitle="Recover your account"
       text="Enter your email address"
+      link={"/"}
     >
       <TextInputs placeholder="Email" secure={false} />
     </AuthContainer>

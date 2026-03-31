@@ -78,7 +78,7 @@ export default function LoginScreen() {
             <View style={{ gap: vs(10), paddingBottom: vs(20) }}>
               <TextInputs placeholder="Email" secure={false} />
               <TextInputs placeholder="Password" secure={true} />
-              <Buttons.PrimaryButton text={"Login"} link="/(tabs)/home" />
+              <Buttons.PrimaryButton text={"Login"} link="/(tabs)/records" />
               <Buttons.SecondaryButton
                 text={"Forgot Password"}
                 link={"/(auth)/forgotPassword"}

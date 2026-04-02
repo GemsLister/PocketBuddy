@@ -1,12 +1,11 @@
+import ScreenContainer from "@/components/container/ScreenContainer";
 import { Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-
 export default function ProfileScreen() {
   return (
-    <SafeAreaView>
+    <ScreenContainer>
       <View>
         <Text>Profile</Text>
       </View>
-    </SafeAreaView>
+    </ScreenContainer>
   );
 }

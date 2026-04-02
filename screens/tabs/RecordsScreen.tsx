@@ -1,13 +1,12 @@
-import * as Button from "@/components/buttons/buttonsIndex";
+import ScreenContainer from "@/components/container/ScreenContainer";
 import { Text, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+
 export default function RecordsScreen() {
   return (
-    <SafeAreaView>
+    <ScreenContainer>
       <View>
         <Text>Home</Text>
-        <Button.AddButton />
       </View>
-    </SafeAreaView>
+    </ScreenContainer>
   );
 }

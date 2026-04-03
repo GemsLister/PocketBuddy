@@ -5,7 +5,7 @@ export default function ScreensLayout() {
   return (
     <Stack screenOptions={{ headerShown: true }}>
       <Stack.Screen
-        name="add"
+        name="income"
         options={({ navigation }) => ({
           title: "",
           headerLeft: () => (

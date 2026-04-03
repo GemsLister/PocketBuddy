@@ -5,7 +5,7 @@ import { ms } from "react-native-size-matters";
 
 export default function AddButton() {
   return (
-    <Link href={"/(screens)/add"} asChild>
+    <Link href={"/(screens)/income"} asChild>
       <TouchableOpacity
         className="rounded-[50] bg-leaf"
         style={{ padding: ms(5, 0.5) }}

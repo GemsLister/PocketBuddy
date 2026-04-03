@@ -1,11 +1,15 @@
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
 import { ms } from "react-native-size-matters";
 
 export default function SaveButton() {
   return (
-    <View className="flex-row flex-1 justify-between">
-      <TouchableOpacity className="flex-row items-center">
+    <View className="flex-row items-center">
+      <TouchableOpacity
+        className="flex-row items-center"
+        onPress={() => router.back()}
+      >
         <Ionicons name="close" size={ms(24, 0.5)} color={"#385a41"} />
         <View>
           <Text

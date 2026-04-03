@@ -3,9 +3,9 @@ import { Link } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
 import { ms } from "react-native-size-matters";
 
-export default function CancelButton() {
+export default function SaveButton() {
   return (
-    <View className="flex-row flex-1 justify-between">
+    <View className="flex-row items-center pr-3">
       <Link href="../" asChild>
         <TouchableOpacity className="flex-row items-center">
           <Ionicons

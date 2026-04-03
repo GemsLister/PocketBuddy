@@ -7,7 +7,7 @@ export default function TabRootLayout() {
   const tabs: {
     name: string;
     title: string;
-    icon: keyof typeof Ionicons.glyphMap;
+    icon?: keyof typeof Ionicons.glyphMap;
   }[] = [
     {
       name: "records",

@@ -6,15 +6,21 @@ import { ms } from "react-native-size-matters";
 
 type ScreenContainerProps = {
   children: ReactNode;
+  showAddButton?: boolean;
 };
 
-export default function ScreenContainer({ children }: ScreenContainerProps) {
+export default function ScreenContainer({
+  children,
+  showAddButton = true,
+}: ScreenContainerProps) {
   return (
     <SafeAreaView className="flex-1 justify-between">
       {children}
-      <View className="items-end" style={{ paddingHorizontal: ms(25, 0.8) }}>
-        <Button.AddButton />
-      </View>
+      {showAddButton && (
+        <View className="items-end" style={{ paddingHorizontal: ms(25, 0.8) }}>
+          <Button.AddButton />
+        </View>
+      )}
     </SafeAreaView>
   );
 }

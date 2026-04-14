@@ -1,9 +1,11 @@
-import SegmentedButton from "@/components/buttons/SegmentedButtons";
+import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 export default function IncomeScreen() {
   return (
     <SafeAreaView>
-      <SegmentedButton />
+      <View>
+        <Text>Income</Text>
+      </View>
     </SafeAreaView>
   );
 }

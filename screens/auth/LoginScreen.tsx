@@ -9,7 +9,11 @@ export default function LoginScreen() {
     <SafeAreaView className="flex-1 justify-around items-center">
       <KeyboardAvoidingView
         enabled={true}
-        behavior={Platform.OS === "android" ? "padding" : "height"}
+        behavior={
+          Platform.OS === "android" || Platform.OS === "ios"
+            ? "padding"
+            : "height"
+        }
       >
         <View>
           <View className="items-center">

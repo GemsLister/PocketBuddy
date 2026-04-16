@@ -29,7 +29,7 @@ export default function AuthRootLayout() {
             headerLeft: () => (
               <TouchableOpacity onPress={() => router.back()}>
                 <Ionicons
-                  name="arrow-back"
+                  name="chevron-back-outline"
                   size={ms(28, 0.5)} // This allows you to scale the arrow size
                   color="#385a41" // Specifically sets the arrow color
                 />

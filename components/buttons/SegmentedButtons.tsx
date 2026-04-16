@@ -1,50 +1,29 @@
-import { useState } from "react";
-import { View } from "react-native";
-import { SegmentedButtons } from "react-native-paper";
-import { ms } from "react-native-size-matters";
-export default function SegmentedButton() {
-  const [value, setValue] = useState("income");
-  return (
-    <View className="w-full items-center">
-      <SegmentedButtons
-        value={value}
-        onValueChange={setValue}
-        density="medium"
-        theme={{
-          colors: {
-            secondaryContainer: "#588157", // Your leaf green
-            onSecondaryContainer: "white",
-          },
-          fonts: {
-            labelLarge: {
-              fontFamily: "Nunito-Bold",
-              fontSize: ms(15, 0.5),
-            },
-          },
-        }}
-        buttons={[
-          {
-            value: "expense",
-            label: "Expense",
-            labelStyle: { padding: ms(10, 0.1) },
-          },
-          {
-            value: "income",
-            label: "Income",
-            labelStyle: { padding: ms(10, 0.1) },
-          },
-          {
-            value: "transfer",
-            label: "Transfer",
-            labelStyle: { padding: ms(10, 0.1) },
-          },
-        ]}
-        style={{
-          alignItems: "center",
-          width: "90%",
-          borderRadius: 0,
-        }}
-      />
-    </View>
-  );
-}
+// import ExpenseScreen from "@/screens/tabs/ExpenseScreen";
+// import IncomeScreen from "@/screens/tabs/IncomeScreen";
+// import TransferScreen from "@/screens/tabs/TransferScreen";
+// import SegmentedControl from "@react-native-segmented-control/segmented-control";
+// import { useState } from "react";
+// export default function SegmentedButton() {
+//   const [value, setValue] = useState("income");
+//   const [selectedIndex, setSelectedIndex] = useState(1);
+//   const renderContent = () => {
+//     switch (value) {
+//       case "expense":
+//         return <ExpenseScreen />;
+//       case "income":
+//         return <IncomeScreen />;
+//       case "tranfer":
+//         return <TransferScreen />;
+//     }
+//   };
+//   return (
+//     <SegmentedControl
+//       values={["Expense", "Income", "Transfer"]}
+//       selectedIndex={selectedIndex}
+//       onChange={(event) => {
+//         setSelectedIndex(event.nativeEvent.selectedSegmentIndex);
+//       }}
+//       className="font-nunito-semibold"
+//     />
+//   );
+// }

@@ -1,11 +1,9 @@
-import { Text, View } from "react-native";
+import * as Buttons from "@/components/buttons/buttonsIndex";
 import { SafeAreaView } from "react-native-safe-area-context";
 export default function ExpenseScreen() {
   return (
     <SafeAreaView>
-      <View>
-        <Text>Expense</Text>
-      </View>
+      <Buttons.TransactionButton />
     </SafeAreaView>
   );
 }

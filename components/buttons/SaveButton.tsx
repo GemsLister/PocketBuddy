@@ -6,7 +6,7 @@ import { ms } from "react-native-size-matters";
 export default function SaveButton() {
   return (
     <View className="flex-row items-center pr-3">
-      <Link href="../" asChild>
+      <Link href={"/(tabs)/records"} asChild>
         <TouchableOpacity className="flex-row items-center">
           <Ionicons
             name="checkmark-circle"

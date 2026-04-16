@@ -21,7 +21,7 @@ export default function TransactionLayout() {
                   className="font-nunito-bold text-moss"
                   style={{ fontSize: ms(18, 0.5) }}
                 >
-                  {items.title}
+                  Add
                 </Text>
               </View>
             ),

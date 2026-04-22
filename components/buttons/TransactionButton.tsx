@@ -1,19 +1,28 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Link, usePathname } from "expo-router";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Href, Link, usePathname } from "expo-router";
+import { ComponentProps } from "react";
+import { Pressable, Text, View } from "react-native";
 import { ms } from "react-native-size-matters";
+
+type IoniconsName = ComponentProps<typeof Ionicons>["name"];
+
+type TransactionItem = {
+  name: string;
+  icon: IoniconsName;
+  path: Href;
+};
 
 export default function TransactionButton() {
   const pathName = usePathname();
 
-  const transactionIcons = [
+  const transactionIcons: TransactionItem[] = [
     {
       icon: "receipt-outline",
       path: "/(transaction)/expense",
       name: "Expense",
     },
     {
-      icon: "cash-outline",
+      icon: "bag-outline",
       path: "/(transaction)/income",
       name: "Income",
     },
@@ -27,28 +36,37 @@ export default function TransactionButton() {
   return (
     <View className="gap-4 flex-row justify-center">
       {transactionIcons.map((item, index) => {
-        const isActive = pathName.endsWith(item.name.toLowerCase());
+        const isActive = pathName.includes(item.name.toLowerCase());
 
         return (
-          <Link href={item.path as any} asChild key={index}>
-            <TouchableOpacity
-              className={`${
-                isActive ? "bg-leaf" : "bg-white border border-moss"
-              } rounded-3xl justify-center items-center`}
+          <Link href={item.path} asChild key={index}>
+            <Pressable
+              className={`${isActive ? "bg-leaf" : "bg-white border border-moss"} rounded-3xl justify-center items-center active:bg-leaf`}
               style={{ padding: ms(25, 0.5) }}
             >
-              <Ionicons
-                name={item.icon as any}
-                size={ms(40, 0.5)}
-                color={isActive ? "white" : "#4A5D4E"}
-              />
-              <Text
-                className={`${isActive ? "text-white" : "text-moss"} font-nunito-semibold`}
-                style={{ fontSize: ms(14, 0.5) }}
-              >
-                {item.name}
-              </Text>
-            </TouchableOpacity>
+              {({ pressed }) => {
+                const iconAndTextColor =
+                  pressed || isActive ? "white" : "#385a41";
+                return (
+                  <>
+                    <Ionicons
+                      name={item.icon}
+                      size={ms(40, 0.5)}
+                      color={iconAndTextColor}
+                    />
+                    <Text
+                      className="font-nunito-semibold"
+                      style={{
+                        fontSize: ms(14, 0.5),
+                        color: iconAndTextColor,
+                      }}
+                    >
+                      {item.name}
+                    </Text>
+                  </>
+                );
+              }}
+            </Pressable>
           </Link>
         );
       })}

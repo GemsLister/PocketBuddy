@@ -1,32 +1,37 @@
+import * as Icons from "@/assets/icons/iconsIndex";
 import * as Buttons from "@/components/buttons/buttonsIndex";
 import CategoriesContainer from "@/components/container/CategoriesContainer";
 import { Ionicons } from "@expo/vector-icons";
-import { ComponentProps } from "react";
+import { ComponentProps, ReactNode } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type IoniconsName = ComponentProps<typeof Ionicons>["name"];
+type TransferIcon = {
+  name: string;
+  icon: IoniconsName | ReactNode;
+};
 
 export default function TransferScreen() {
-  const transferIcons: { name: string; icon: IoniconsName }[] = [
+  const transferIcons: TransferIcon[] = [
     {
-      name: "Salary",
-      icon: "cash-outline",
+      name: "Savings",
+      icon: <Icons.SavingsIcon />,
     },
     {
-      name: "Freelance",
-      icon: "briefcase-outline",
+      name: "Investment",
+      icon: <Icons.InvestmentIcon />,
     },
     {
-      name: "Business",
-      icon: "trending-up-outline",
+      name: "Credit Card",
+      icon: "card-outline",
     },
     {
-      name: "Allowance",
-      icon: "wallet-outline",
+      name: "Family",
+      icon: "people-outline",
     },
     {
-      name: "Gifts",
-      icon: "gift-outline",
+      name: "Emergency",
+      icon: "shield-checkmark-outline",
     },
     {
       name: "Others",

@@ -44,11 +44,6 @@ export default function TransactionButton() {
                   pressed || isActive ? "white" : "#385a41";
                 return (
                   <>
-                    {/* <Ionicons
-                      name={item.icon}
-                      size={ms(40, 0.5)}
-                      color={iconAndTextColor}
-                    /> */}
                     <Text
                       className="font-nunito-semibold"
                       style={{

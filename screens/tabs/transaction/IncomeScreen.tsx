@@ -2,6 +2,7 @@ import * as Buttons from "@/components/buttons/buttonsIndex";
 import CategoriesContainer from "@/components/container/CategoriesContainer";
 import { Ionicons } from "@expo/vector-icons";
 import { ComponentProps } from "react";
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type IoniconsName = ComponentProps<typeof Ionicons>["name"];
@@ -34,10 +35,20 @@ export default function IncomeScreen() {
     },
   ];
   return (
-    <SafeAreaView>
-      <Buttons.TransactionButton />
-      {/* Categories */}
-      <CategoriesContainer icons={incomeIcons} view="Income" />
+    <SafeAreaView className="flex-1">
+      <KeyboardAvoidingView
+        enabled={true}
+        behavior={Platform.OS === "android" || "ios" ? "padding" : "height"}
+        className="flex-1 h-[40]"
+      >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <Buttons.TransactionButton />
+          <CategoriesContainer icons={incomeIcons} view="Income" />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

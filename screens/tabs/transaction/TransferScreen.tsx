@@ -3,6 +3,7 @@ import * as Buttons from "@/components/buttons/buttonsIndex";
 import CategoriesContainer from "@/components/container/CategoriesContainer";
 import { Ionicons } from "@expo/vector-icons";
 import { ComponentProps, ReactNode } from "react";
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type IoniconsName = ComponentProps<typeof Ionicons>["name"];
@@ -39,10 +40,19 @@ export default function TransferScreen() {
     },
   ];
   return (
-    <SafeAreaView>
-      <Buttons.TransactionButton />
-      {/* Categories */}
-      <CategoriesContainer icons={transferIcons} view="Transfer" />
+    <SafeAreaView style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <Buttons.TransactionButton />
+          <CategoriesContainer icons={transferIcons} view="Transfer" />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

@@ -2,6 +2,7 @@ import * as Buttons from "@/components/buttons/buttonsIndex";
 import CategoriesContainer from "@/components/container/CategoriesContainer";
 import { Ionicons } from "@expo/vector-icons";
 import { ComponentProps } from "react";
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 type IoniconsName = ComponentProps<typeof Ionicons>["name"];
@@ -34,9 +35,19 @@ export default function ExpenseScreen() {
     },
   ];
   return (
-    <SafeAreaView>
-      <Buttons.TransactionButton />
-      <CategoriesContainer icons={expenseIcons} view="Expenses" />
+    <SafeAreaView style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          keyboardShouldPersistTaps="handled"
+        >
+          <Buttons.TransactionButton />
+          <CategoriesContainer icons={expenseIcons} view="Expenses" />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

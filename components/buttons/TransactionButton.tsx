@@ -1,14 +1,12 @@
-import { Ionicons } from "@expo/vector-icons";
 import { Href, Link, usePathname } from "expo-router";
-import { ComponentProps } from "react";
 import { Pressable, Text, View } from "react-native";
 import { ms } from "react-native-size-matters";
 
-type IoniconsName = ComponentProps<typeof Ionicons>["name"];
+// type IoniconsName = ComponentProps<typeof Ionicons>["name"];
 
 type TransactionItem = {
   name: string;
-  icon: IoniconsName;
+  // icon: IoniconsName;
   path: Href;
 };
 
@@ -17,17 +15,14 @@ export default function TransactionButton() {
 
   const transactionIcons: TransactionItem[] = [
     {
-      icon: "receipt-outline",
       path: "/(transaction)/expense",
       name: "Expense",
     },
     {
-      icon: "bag-outline",
       path: "/(transaction)/income",
       name: "Income",
     },
     {
-      icon: "card-outline",
       path: "/(transaction)/transfer",
       name: "Transfer",
     },
@@ -42,18 +37,18 @@ export default function TransactionButton() {
           <Link href={item.path} asChild key={index}>
             <Pressable
               className={`${isActive ? "bg-leaf" : "bg-white border border-moss"} rounded-3xl justify-center items-center active:bg-leaf`}
-              style={{ padding: ms(25, 0.5) }}
+              style={{ padding: ms(15, 0.5), width: ms(100, 0.7) }}
             >
               {({ pressed }) => {
                 const iconAndTextColor =
                   pressed || isActive ? "white" : "#385a41";
                 return (
                   <>
-                    <Ionicons
+                    {/* <Ionicons
                       name={item.icon}
                       size={ms(40, 0.5)}
                       color={iconAndTextColor}
-                    />
+                    /> */}
                     <Text
                       className="font-nunito-semibold"
                       style={{

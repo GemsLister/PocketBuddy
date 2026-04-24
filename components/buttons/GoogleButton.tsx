@@ -5,7 +5,7 @@ export default function GoogleButton() {
   return (
     <View>
       <TouchableOpacity
-        className="flex-row justify-center items-center border-[1.5px] border-leaf"
+        className="flex-row justify-center items-center border border-leaf"
         activeOpacity={0.7}
         style={{
           padding: ms(10, 0.5),

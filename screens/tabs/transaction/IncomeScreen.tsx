@@ -1,9 +1,6 @@
-import * as Buttons from "@/components/buttons/buttonsIndex";
-import CategoriesContainer from "@/components/container/CategoriesContainer";
+import TransactionScreenContainer from "@/components/container/TransactionScreenContainer";
 import { Ionicons } from "@expo/vector-icons";
 import { ComponentProps } from "react";
-import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 type IoniconsName = ComponentProps<typeof Ionicons>["name"];
 
@@ -21,34 +18,18 @@ export default function IncomeScreen() {
       name: "Business",
       icon: "trending-up-outline",
     },
+    // {
+    //   name: "Allowance",
+    //   icon: "wallet-outline",
+    // },
+    // {
+    //   name: "Gifts",
+    //   icon: "gift-outline",
+    // },
     {
-      name: "Allowance",
-      icon: "wallet-outline",
-    },
-    {
-      name: "Gifts",
-      icon: "gift-outline",
-    },
-    {
-      name: "Others",
-      icon: "add-outline",
+      name: "Other",
+      icon: "ellipsis-horizontal-outline",
     },
   ];
-  return (
-    <SafeAreaView className="flex-1">
-      <KeyboardAvoidingView
-        enabled={true}
-        behavior={Platform.OS === "android" || "ios" ? "padding" : "height"}
-        className="flex-1 h-[40]"
-      >
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1 }}
-          keyboardShouldPersistTaps="handled"
-        >
-          <Buttons.TransactionButton />
-          <CategoriesContainer icons={incomeIcons} view="Income" />
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
-  );
+  return <TransactionScreenContainer icons={incomeIcons} />;
 }

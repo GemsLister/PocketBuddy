@@ -1,15 +1,24 @@
 import { Ionicons } from "@expo/vector-icons";
-import { ComponentProps } from "react";
-import { Pressable, Text, View } from "react-native";
+import { ComponentProps, ReactNode, useState } from "react";
+import { Pressable, Text, TextInput, View } from "react-native";
 import { ms } from "react-native-size-matters";
 type IoniconsName = ComponentProps<typeof Ionicons>["name"];
 
+type CategoryItem = {
+  name: string;
+  icon: IoniconsName | ReactNode;
+};
+
 type CategoriesProps = {
-  icons: { name: string; icon: IoniconsName }[];
+  icons: CategoryItem[];
   view: string;
 };
 
 export default function CategoriesContainer({ icons, view }: CategoriesProps) {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [amount, setAmount] = useState("");
+  const [note, setNote] = useState("");
+
   return (
     <View
       style={{
@@ -22,30 +31,90 @@ export default function CategoriesContainer({ icons, view }: CategoriesProps) {
         className="font-nunito-bold text-moss"
         style={{ fontSize: ms(25, 0.5) }}
       >
-        Categories
+        {view}
       </Text>
 
       <View className="flex-row flex-wrap" style={{ gap: ms(15, 0.6) }}>
-        {icons.map((items, index) => (
-          <Pressable
-            key={index}
-            className="flex items-center justify-center gap-3 bg-moss/10 active:bg-moss/20 rounded-3xl border border-moss/20"
-            style={{
-              height: ms(100, 0.7),
-              width: ms(100, 0.7),
-              padding: ms(8, 0.5),
-            }}
-          >
-            <Ionicons name={items.icon} size={ms(35, 0.5)} color="#385a41" />
-            <Text
-              className="font-nunito-semibold text-moss"
-              style={{ fontSize: ms(15, 0.7) }}
+        {icons.map((item, index) => {
+          const isSelected = selectedCategory === item.name;
+          return (
+            <Pressable
+              key={index}
+              onPress={() => {
+                setSelectedCategory(item.name);
+                setAmount("");
+                setNote("");
+              }}
+              className={`flex items-center justify-center gap-3 rounded-3xl border ${isSelected ? "bg-moss border-moss" : "bg-moss/10 border-moss/20 active:bg-moss/20"}`}
+              style={{
+                height: ms(100, 0.7),
+                width: ms(100, 0.7),
+                padding: ms(8, 0.5),
+              }}
             >
-              {items.name}
-            </Text>
-          </Pressable>
-        ))}
+              {typeof item.icon === "string" ? (
+                <Ionicons
+                  name={item.icon as IoniconsName}
+                  size={ms(35, 0.5)}
+                  color={isSelected ? "#ffffff" : "#385a41"}
+                />
+              ) : (
+                item.icon
+              )}
+              <Text
+                className={`font-nunito-semibold ${isSelected ? "text-white" : "text-moss"}`}
+                style={{ fontSize: ms(15, 0.7) }}
+              >
+                {item.name}
+              </Text>
+            </Pressable>
+          );
+        })}
       </View>
+
+      {selectedCategory && (
+        <View style={{ gap: ms(12, 0.5) }}>
+          <Text
+            className="font-nunito-bold text-moss"
+            style={{ fontSize: ms(18, 0.5) }}
+          >
+            {selectedCategory}
+          </Text>
+
+          <TextInput
+            className="font-nunito text-moss"
+            style={{
+              fontSize: ms(16, 0.5),
+              borderWidth: 1,
+              borderColor: "#94a3b8",
+              borderRadius: ms(13, 0.3),
+              paddingVertical: ms(10, 0.5),
+              paddingHorizontal: ms(14, 0.5),
+            }}
+            placeholder="Amount"
+            placeholderTextColor="#94a3b8"
+            keyboardType="decimal-pad"
+            value={amount}
+            onChangeText={setAmount}
+          />
+
+          <TextInput
+            className="font-nunito text-moss"
+            style={{
+              fontSize: ms(16, 0.5),
+              borderWidth: 1,
+              borderColor: "#94a3b8",
+              borderRadius: ms(13, 0.3),
+              paddingVertical: ms(10, 0.5),
+              paddingHorizontal: ms(14, 0.5),
+            }}
+            placeholder="Note (optional)"
+            placeholderTextColor="#94a3b8"
+            value={note}
+            onChangeText={setNote}
+          />
+        </View>
+      )}
     </View>
   );
 }

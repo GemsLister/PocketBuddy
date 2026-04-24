@@ -31,7 +31,7 @@ export default function CategoriesContainer({ icons, view }: CategoriesProps) {
         className="font-nunito-bold text-moss"
         style={{ fontSize: ms(25, 0.5) }}
       >
-        {view}
+        Categories
       </Text>
 
       <View className="flex-row flex-wrap" style={{ gap: ms(15, 0.6) }}>
@@ -82,11 +82,9 @@ export default function CategoriesContainer({ icons, view }: CategoriesProps) {
           </Text>
 
           <TextInput
-            className="font-nunito text-moss"
+            className="font-nunito text-moss border border-slate-400"
             style={{
               fontSize: ms(16, 0.5),
-              borderWidth: 1,
-              borderColor: "#94a3b8",
               borderRadius: ms(13, 0.3),
               paddingVertical: ms(10, 0.5),
               paddingHorizontal: ms(14, 0.5),
@@ -99,11 +97,9 @@ export default function CategoriesContainer({ icons, view }: CategoriesProps) {
           />
 
           <TextInput
-            className="font-nunito text-moss"
+            className="font-nunito text-moss border border-slate-400"
             style={{
               fontSize: ms(16, 0.5),
-              borderWidth: 1,
-              borderColor: "#94a3b8",
               borderRadius: ms(13, 0.3),
               paddingVertical: ms(10, 0.5),
               paddingHorizontal: ms(14, 0.5),

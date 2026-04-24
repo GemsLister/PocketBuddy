@@ -1,6 +1,6 @@
 import { ms } from "react-native-size-matters";
 import Svg, { Path } from "react-native-svg";
-export default function InvestmentIcon({ size = 50 }) {
+export default function InvestmentIcon({ size = 25 }) {
   const scaledSize = ms(size, 0.8);
   return (
     <Svg

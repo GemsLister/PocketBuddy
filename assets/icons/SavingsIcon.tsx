@@ -5,7 +5,7 @@ type SavingsIconProps = {
   size?: number;
 };
 
-export default function SavingsIcon({ size = 50 }: SavingsIconProps) {
+export default function SavingsIcon({ size = 25 }: SavingsIconProps) {
   const scaledSize = ms(size, 0.8);
   return (
     <Svg

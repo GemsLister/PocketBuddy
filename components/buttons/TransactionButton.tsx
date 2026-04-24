@@ -37,7 +37,7 @@ export default function TransactionButton() {
           <Link href={item.path} asChild key={index}>
             <Pressable
               className={`${isActive ? "bg-leaf" : "bg-white border border-moss"} rounded-3xl justify-center items-center active:bg-leaf`}
-              style={{ padding: ms(15, 0.5), width: ms(100, 0.7) }}
+              style={{ padding: ms(8, 0.5), width: ms(100, 0.7) }}
             >
               {({ pressed }) => {
                 const iconAndTextColor =

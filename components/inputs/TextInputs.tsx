@@ -5,9 +5,16 @@ import { ms } from "react-native-size-matters";
 type TextInputsProps = {
   placeholder: string;
   secure: boolean;
+  value: string;
+  onChangeText: (text: string) => void;
 };
 
-export default function TextInputs({ placeholder, secure }: TextInputsProps) {
+export default function TextInputs({
+  placeholder,
+  secure,
+  value,
+  onChangeText,
+}: TextInputsProps) {
   const [showPassword, setShowPassword] = useState(secure);
   return (
     <View>
@@ -35,6 +42,8 @@ export default function TextInputs({ placeholder, secure }: TextInputsProps) {
             />
           ) : null
         }
+        value={value}
+        onChangeText={onChangeText}
       />
     </View>
   );

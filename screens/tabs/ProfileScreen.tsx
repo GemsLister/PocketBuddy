@@ -22,7 +22,11 @@ type SettingsItem = {
 const settingsItems: SettingsItem[] = [
   { id: "edit_profile", label: "Edit Profile", icon: "person-outline" },
   { id: "currency", label: "Currency", icon: "cash-outline" },
-  { id: "notifications", label: "Notifications", icon: "notifications-outline" },
+  {
+    id: "notifications",
+    label: "Notifications",
+    icon: "notifications-outline",
+  },
   { id: "data_export", label: "Data Export", icon: "download-outline" },
   { id: "help", label: "Help & Support", icon: "help-circle-outline" },
   { id: "about", label: "About", icon: "information-circle-outline" },
@@ -54,10 +58,7 @@ function AvatarSection({ user }: { user: UserProfile | null }) {
       </Text>
 
       {/* Email */}
-      <Text
-        className="font-nunito text-leaf"
-        style={{ fontSize: ms(14, 0.5) }}
-      >
+      <Text className="font-nunito text-leaf" style={{ fontSize: ms(14, 0.5) }}>
         {user?.email ?? "—"}
       </Text>
     </View>

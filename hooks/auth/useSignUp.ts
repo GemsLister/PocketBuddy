@@ -25,7 +25,7 @@ export const useSignUp = () => {
       console.log("Error Status:", error.status);
     } else {
       console.log("SUCCESS!");
-      router.replace("/(tabs)/records");
+      router.replace("/(auth)/login");
     }
   };
 

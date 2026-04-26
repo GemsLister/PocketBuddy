@@ -35,52 +35,53 @@ export default function CategoriesContainer({ icons, view }: CategoriesProps) {
         Categories
       </Text>
 
-      <View
-        className="flex-row flex-wrap items-center rounded-3xl"
-        style={{ gap: ms(20, 0.8) }}
-      >
-        {icons.map((item, index) => {
-          const isSelected = selectedCategory === item.name;
-          return (
-            <Pressable
-              key={index}
-              onPress={() => {
-                setSelectedCategory(item.name);
-                setAmount("");
-                setNote("");
-              }}
-              className={`rounded-3xl justify-center gap-3 ${isSelected ? "bg-leaf" : "bg-beige"}`}
-              style={{
-                width: ms(100, 0.2),
-                aspectRatio: 1,
-              }}
-            >
-              <View
-                className="items-center justify-center"
-                style={{ transform: [{ scale: 1 }] }}
+      <View className="flex-row flex-wrap items-center justify-center rounded-3xl">
+        {/* Buttons mapping */}
+        <View className="flex-row flex-wrap" style={{ gap: ms(20, 0.8) }}>
+          {icons.map((item, index) => {
+            const isSelected = selectedCategory === item.name;
+            return (
+              <Pressable
+                key={index}
+                onPress={() => {
+                  setSelectedCategory(item.name);
+                  setAmount("");
+                  setNote("");
+                }}
+                className={`rounded-3xl justify-center gap-3 ${isSelected ? "bg-leaf" : "bg-beige"}`}
+                style={{
+                  padding: vs(8),
+                  width: vs(85),
+                  aspectRatio: 1,
+                }}
               >
-                <View className="bg-beige p-3 rounded-full">
-                  {typeof item.icon === "string" ? (
-                    <Ionicons
-                      name={item.icon as IoniconsName}
-                      size={ms(25, 0.5)}
-                      color={isSelected ? "#ffffff" : "#385a41"}
-                    />
-                  ) : (
-                    item.icon
-                  )}
-                </View>
-
-                <Text
-                  className={`font-nunito-bold ${isSelected ? "text-white" : "text-moss"}`}
-                  style={{ fontSize: vs(10) }}
+                <View
+                  className="items-center justify-center"
+                  style={{ transform: [{ scale: ms(1, 0.2) }] }}
                 >
-                  {item.name}
-                </Text>
-              </View>
-            </Pressable>
-          );
-        })}
+                  <View className="bg-beige p-3 rounded-full">
+                    {typeof item.icon === "string" ? (
+                      <Ionicons
+                        name={item.icon as IoniconsName}
+                        size={ms(25, 0.5)}
+                        color={isSelected ? "#ffffff" : "#385a41"}
+                      />
+                    ) : (
+                      item.icon
+                    )}
+                  </View>
+
+                  <Text
+                    className={`font-nunito-bold ${isSelected ? "text-white" : "text-moss"}`}
+                    style={{ fontSize: vs(10) }}
+                  >
+                    {item.name}
+                  </Text>
+                </View>
+              </Pressable>
+            );
+          })}
+        </View>
       </View>
 
       {selectedCategory && (

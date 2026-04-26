@@ -44,6 +44,7 @@ export default function TextInputs({
         }
         value={value}
         onChangeText={onChangeText}
+        autoCapitalize="none"
       />
     </View>
   );

@@ -2,15 +2,10 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { ms } from "react-native-size-matters";
 type PrimaryButtonProps = {
   text: string;
-  // link: Href;
   onPress: () => void;
 };
 
-export default function PrimaryButton({
-  text,
-  // link,
-  onPress,
-}: PrimaryButtonProps) {
+export default function PrimaryButton({ text, onPress }: PrimaryButtonProps) {
   return (
     <View>
       {/* <Link href={link} asChild> */}

@@ -1,17 +1,19 @@
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { handleGoogleLogin } from "@/services/googleAuth";
+import { useRouter } from "expo-router";
+import { Image, Pressable, Text, View } from "react-native";
 import { ms } from "react-native-size-matters";
-
 export default function GoogleButton() {
+  const router = useRouter();
   return (
     <View>
-      <TouchableOpacity
+      <Pressable
         className="flex-row justify-center items-center border border-leaf"
-        activeOpacity={0.7}
         style={{
           padding: ms(10, 0.5),
           borderRadius: ms(15, 0.3),
           gap: ms(5, 0.3),
         }}
+        onPress={() => handleGoogleLogin(router)}
       >
         <Image
           source={require("@/assets/images/google.png")}
@@ -25,7 +27,7 @@ export default function GoogleButton() {
             Continue with Google
           </Text>
         </View>
-      </TouchableOpacity>
+      </Pressable>
     </View>
   );
 }

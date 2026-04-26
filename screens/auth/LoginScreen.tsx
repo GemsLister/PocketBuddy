@@ -1,10 +1,14 @@
 import * as Buttons from "@/components/buttons/buttonsIndex";
 import TextInputs from "@/components/inputs/TextInputs";
 import { Link } from "expo-router";
+import { useState } from "react";
 import { KeyboardAvoidingView, Platform, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ms, vs } from "react-native-size-matters";
+
 export default function LoginScreen() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   return (
     <SafeAreaView className="flex-1 justify-around items-center">
       <KeyboardAvoidingView
@@ -80,9 +84,19 @@ export default function LoginScreen() {
             </View>
 
             <View style={{ gap: vs(10), paddingBottom: vs(20) }}>
-              <TextInputs placeholder="Email" secure={false} />
-              <TextInputs placeholder="Password" secure={true} />
-              <Buttons.PrimaryButton text={"Login"} link="/(tabs)/records" />
+              <TextInputs
+                placeholder="Email"
+                secure={false}
+                onChangeText={(text) => setEmail(text)}
+                value={email}
+              />
+              <TextInputs
+                placeholder="Password"
+                secure={true}
+                onChangeText={(text) => setEmail(text)}
+                value={password}
+              />
+              {/* <Buttons.PrimaryButton text={"Login"} link="/(tabs)/records" /> */}
               <Buttons.SecondaryButton
                 text={"Forgot Password"}
                 link={"/(auth)/forgotPassword"}

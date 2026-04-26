@@ -1,4 +1,3 @@
-import PrimaryButton from "@/components/buttons/PrimaryButton";
 import AuthContainer from "@/components/container/AuthContainer";
 import TextInputs from "@/components/inputs/TextInputs";
 import { useSignUp } from "@/hooks/auth/useSignUp";
@@ -15,10 +14,9 @@ export default function RegisterScreen() {
       label="Create Account"
       screenTitle="Let's Get Started!"
       text="Enter your personal details"
-      link={"/"}
+      onPress={() => handleSignUp(email, password)}
     >
       <View style={{ gap: vs(10) }}>
-        {/* <TextInputs placeholder="Name" secure={false} /> */}
         <TextInputs
           placeholder="Email"
           secure={false}
@@ -30,10 +28,6 @@ export default function RegisterScreen() {
           secure={true}
           value={password}
           onChangeText={(text) => setPassword(text)}
-        />
-        <PrimaryButton
-          text="Register"
-          onPress={() => handleSignUp(email, password)}
         />
       </View>
     </AuthContainer>

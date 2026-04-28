@@ -47,7 +47,13 @@
           }
         }
       ],
-      "@react-native-google-signin/google-signin"
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "androidSHA1": "c6:1e:45:2c:a6:29:f5:cb:b1:54:96:26:fb:1d:cc:84:90:12:75:d4",
+          "iosUrlScheme": "com.googleusercontent.apps.176157485217-njtc9hehl1k1gbf7pqk7u9vnd6fmumgh"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

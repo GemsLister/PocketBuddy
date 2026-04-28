@@ -3,55 +3,16 @@ import EmptyState from "@/components/records/EmptyState";
 import FilterBar from "@/components/records/FilterBar";
 import SummaryCard from "@/components/records/SummaryCard";
 import TransactionItem, {
-    Transaction,
-    TransactionType,
+  Transaction,
+  TransactionType,
 } from "@/components/records/TransactionItem";
+import {
+  calculateSummary,
+  groupTransactionsByDate,
+} from "@/utils/transactionHelpers";
 import { useMemo, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { ms, vs } from "react-native-size-matters";
-
-// ---------- Types (ready for backend integration) ----------
-type SummaryStats = {
-  totalBalance: number;
-  totalIncome: number;
-  totalExpenses: number;
-};
-
-// ---------- Helper Functions ----------
-function calculateSummary(transactions: Transaction[]): SummaryStats {
-  const income = transactions
-    .filter((t) => t.type === "income")
-    .reduce((sum, t) => sum + t.amount, 0);
-
-  const expenses = transactions
-    .filter((t) => t.type === "expense")
-    .reduce((sum, t) => sum + t.amount, 0);
-
-  return {
-    totalIncome: income,
-    totalExpenses: expenses,
-    totalBalance: income - expenses,
-  };
-}
-
-function groupTransactionsByDate(transactions: Transaction[]) {
-  const groups: { [date: string]: Transaction[] } = {};
-
-  transactions.forEach((transaction) => {
-    const date = new Date(transaction.date).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-
-    if (!groups[date]) {
-      groups[date] = [];
-    }
-    groups[date].push(transaction);
-  });
-
-  return groups;
-}
 
 // ---------- Main Screen ----------
 export default function RecordsScreen() {
@@ -61,10 +22,7 @@ export default function RecordsScreen() {
   const [filterType, setFilterType] = useState<TransactionType | "all">("all");
 
   // Calculate summary stats
-  const summary = useMemo(
-    () => calculateSummary(transactions),
-    [transactions]
-  );
+  const summary = useMemo(() => calculateSummary(transactions), [transactions]);
 
   // Filter and search logic
   const filteredTransactions = useMemo(() => {
@@ -81,20 +39,20 @@ export default function RecordsScreen() {
       filtered = filtered.filter(
         (t) =>
           t.category.toLowerCase().includes(query) ||
-          t.description?.toLowerCase().includes(query)
+          t.description?.toLowerCase().includes(query),
       );
     }
 
     // Sort by date (newest first)
     return filtered.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
     );
   }, [transactions, filterType, searchQuery]);
 
   // Group transactions by date
   const groupedTransactions = useMemo(
     () => groupTransactionsByDate(filteredTransactions),
-    [filteredTransactions]
+    [filteredTransactions],
   );
 
   const handleTransactionPress = (transaction: Transaction) => {

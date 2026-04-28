@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Text, TouchableOpacity, View } from "react-native";
 import { ms, vs } from "react-native-size-matters";
 
-export type TransactionType = "income" | "expense" | "transfer";
+export type TransactionType = "income" | "expense";
 
 export type Transaction = {
   id: string;
@@ -29,8 +29,8 @@ export default function TransactionItem({
         return { bg: "bg-green-50", icon: "#588157", text: "text-leaf" };
       case "expense":
         return { bg: "bg-red-50", icon: "#dc2626", text: "text-red-600" };
-      case "transfer":
-        return { bg: "bg-blue-50", icon: "#2563eb", text: "text-blue-600" };
+      // case "transfer":
+      //   return { bg: "bg-blue-50", icon: "#2563eb", text: "text-blue-600" };
     }
   };
 
@@ -57,7 +57,11 @@ export default function TransactionItem({
             borderRadius: ms(22, 0.5),
           }}
         >
-          <Ionicons name={transaction.icon} size={ms(22, 0.5)} color={colors.icon} />
+          <Ionicons
+            name={transaction.icon}
+            size={ms(22, 0.5)}
+            color={colors.icon}
+          />
         </View>
 
         <View style={{ gap: vs(2) }}>

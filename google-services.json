@@ -14,7 +14,31 @@
       },
       "oauth_client": [
         {
-          "client_id": "176157485217-r3k92771o33buuvtkvfh1nppou073pgu.apps.googleusercontent.com",
+          "client_id": "176157485217-6r2n97fdimcvng5thbfo0qppug9p2944.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jameslopez.pocketbuddy",
+            "certificate_hash": "c61e452ca629f5cbb1549626fb1dcc84901275d4"
+          }
+        },
+        {
+          "client_id": "176157485217-9s317cr9eae111eno375ueu31hg61cou.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jameslopez.pocketbuddy",
+            "certificate_hash": "1e74ffb4a0cccb0daabc799c063b3ad737d11fb2"
+          }
+        },
+        {
+          "client_id": "176157485217-hedevd10snn98qcq76poo1792904i10o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jameslopez.pocketbuddy",
+            "certificate_hash": "98536cbb276897b09285a135e696098f3dee3218"
+          }
+        },
+        {
+          "client_id": "176157485217-njtc9hehl1k1gbf7pqk7u9vnd6fmumgh.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +51,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "176157485217-r3k92771o33buuvtkvfh1nppou073pgu.apps.googleusercontent.com",
+              "client_id": "176157485217-njtc9hehl1k1gbf7pqk7u9vnd6fmumgh.apps.googleusercontent.com",
               "client_type": 3
             },
             {

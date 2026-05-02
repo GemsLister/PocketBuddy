@@ -1,5 +1,5 @@
-import SecondaryButton from "@/components/buttons/SecondaryButton";
-import ScreenContainer from "@/components/container/ScreenContainer";
+import SecondaryButton from "@/src/components/buttons/SecondaryButton";
+import ScreenContainer from "@/src/components/container/ScreenContainer";
 import { Ionicons } from "@expo/vector-icons";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { ms, vs } from "react-native-size-matters";

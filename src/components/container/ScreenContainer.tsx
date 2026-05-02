@@ -1,4 +1,4 @@
-import * as Button from "@/components/buttons/buttonsIndex";
+import * as Button from "@/src/components/buttons/buttonsIndex";
 import type { ReactNode } from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";

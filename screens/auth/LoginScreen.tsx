@@ -1,6 +1,6 @@
-import * as Buttons from "@/components/buttons/buttonsIndex";
-import TextInputs from "@/components/inputs/TextInputs";
-import { useLogin } from "@/hooks/auth/useLogin";
+import * as Buttons from "@/src/components/buttons/buttonsIndex";
+import TextInputs from "@/src/components/inputs/TextInputs";
+import { useLogin } from "@/src/hooks/auth/useLogin";
 import { Link } from "expo-router";
 import { useState } from "react";
 import { KeyboardAvoidingView, Platform, Text, View } from "react-native";

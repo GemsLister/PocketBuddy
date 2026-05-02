@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/src/lib/supabase";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
 const GOOGLE_WEB_CLIENT_ID =

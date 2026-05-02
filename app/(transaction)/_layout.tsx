@@ -1,4 +1,4 @@
-import * as Buttons from "@/components/buttons/buttonsIndex";
+import * as Buttons from "@/src/components/buttons/buttonsIndex";
 import { Stack } from "expo-router";
 import { Text } from "react-native";
 import { ms } from "react-native-size-matters";

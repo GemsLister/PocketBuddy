@@ -1,5 +1,5 @@
 import * as Icons from "@/assets/icons/iconsIndex";
-import TransactionScreenContainer from "@/components/container/TransactionScreenContainer";
+import TransactionScreenContainer from "@/src/components/container/TransactionScreenContainer";
 import { Ionicons } from "@expo/vector-icons";
 import { ComponentProps, ReactNode } from "react";
 

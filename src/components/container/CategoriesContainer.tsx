@@ -1,4 +1,4 @@
-import * as Buttons from "@/components/buttons/buttonsIndex";
+import * as Buttons from "@/src/components/buttons/buttonsIndex";
 import { Ionicons } from "@expo/vector-icons";
 import { ComponentProps, ReactNode, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";

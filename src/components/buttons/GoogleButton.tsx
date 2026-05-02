@@ -1,4 +1,4 @@
-import { handleGoogleLogin } from "@/services/googleAuth";
+import { handleGoogleLogin } from "@/src/services/googleAuth";
 import { useRouter } from "expo-router";
 import { Image, Pressable, Text, View } from "react-native";
 import { ms } from "react-native-size-matters";

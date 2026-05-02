@@ -1,4 +1,4 @@
-import { Transaction } from "@/components/records/TransactionItem";
+import { Transaction } from "@/src/components/records/TransactionItem";
 
 type SummaryStats = {
   totalBalance: number;

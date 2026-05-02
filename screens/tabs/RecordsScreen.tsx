@@ -1,15 +1,15 @@
-import ScreenContainer from "@/components/container/ScreenContainer";
-import EmptyState from "@/components/records/EmptyState";
-import FilterBar from "@/components/records/FilterBar";
-import SummaryCard from "@/components/records/SummaryCard";
+import ScreenContainer from "@/src/components/container/ScreenContainer";
+import EmptyState from "@/src/components/records/EmptyState";
+import FilterBar from "@/src/components/records/FilterBar";
+import SummaryCard from "@/src/components/records/SummaryCard";
 import TransactionItem, {
   Transaction,
   TransactionType,
-} from "@/components/records/TransactionItem";
+} from "@/src/components/records/TransactionItem";
 import {
   calculateSummary,
   groupTransactionsByDate,
-} from "@/utils/transactionHelpers";
+} from "@/src/utils/transactionHelpers";
 import { useMemo, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { ms, vs } from "react-native-size-matters";

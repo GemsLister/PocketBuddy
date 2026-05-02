@@ -1,4 +1,4 @@
-import TransactionScreenContainer from "@/components/container/TransactionScreenContainer";
+import TransactionScreenContainer from "@/src/components/container/TransactionScreenContainer";
 import { Ionicons } from "@expo/vector-icons";
 import { ComponentProps } from "react";
 

@@ -1,5 +1,5 @@
-import * as Buttons from "@/components/buttons/buttonsIndex";
-import CategoriesContainer from "@/components/container/CategoriesContainer";
+import * as Buttons from "@/src/components/buttons/buttonsIndex";
+import CategoriesContainer from "@/src/components/container/CategoriesContainer";
 import { Ionicons } from "@expo/vector-icons";
 import { ComponentProps, ReactNode } from "react";
 import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";

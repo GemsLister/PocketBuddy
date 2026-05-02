@@ -1,6 +1,6 @@
-import AuthContainer from "@/components/container/AuthContainer";
-import TextInputs from "@/components/inputs/TextInputs";
-import { useSignUp } from "@/hooks/auth/useSignUp";
+import AuthContainer from "@/src/components/container/AuthContainer";
+import TextInputs from "@/src/components/inputs/TextInputs";
+import { useSignUp } from "@/src/hooks/auth/useSignUp";
 import { useState } from "react";
 import { View } from "react-native";
 import { vs } from "react-native-size-matters";

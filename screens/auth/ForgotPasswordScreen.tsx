@@ -1,6 +1,6 @@
-import AuthContainer from "@/components/container/AuthContainer";
-import TextInputs from "@/components/inputs/TextInputs";
-import { useForgotPassword } from "@/hooks/auth/useForgotPassword";
+import AuthContainer from "@/src/components/container/AuthContainer";
+import TextInputs from "@/src/components/inputs/TextInputs";
+import { useForgotPassword } from "@/src/hooks/auth/useForgotPassword";
 import { useState } from "react";
 export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState("");

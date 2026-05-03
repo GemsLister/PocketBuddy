@@ -18,14 +18,6 @@ export default function IncomeScreen() {
       name: "Business",
       icon: "trending-up-outline",
     },
-    // {
-    //   name: "Allowance",
-    //   icon: "wallet-outline",
-    // },
-    // {
-    //   name: "Gifts",
-    //   icon: "gift-outline",
-    // },
     {
       name: "Other",
       icon: "ellipsis-horizontal-outline",

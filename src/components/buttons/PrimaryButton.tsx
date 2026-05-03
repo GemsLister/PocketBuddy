@@ -8,7 +8,6 @@ type PrimaryButtonProps = {
 export default function PrimaryButton({ text, onPress }: PrimaryButtonProps) {
   return (
     <View>
-      {/* <Link href={link} asChild> */}
       <TouchableOpacity
         className="bg-moss items-center"
         activeOpacity={0.7}
@@ -24,7 +23,6 @@ export default function PrimaryButton({ text, onPress }: PrimaryButtonProps) {
           </Text>
         </View>
       </TouchableOpacity>
-      {/* </Link> */}
     </View>
   );
 }

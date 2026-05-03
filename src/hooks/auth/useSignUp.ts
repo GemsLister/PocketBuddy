@@ -1,5 +1,4 @@
 import { createClient } from "@supabase/supabase-js";
-import * as Linking from "expo-linking";
 import { useRouter } from "expo-router";
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || "";
 const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || "";
@@ -7,7 +6,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export const useSignUp = () => {
   const router = useRouter();
-  const redirectTo = Linking.createURL("records");
+  // const redirectTo = Linking.createURL("records");
   const handleSignUp = async (email: string, password: string) => {
     // I-log nato ang URL para makita nato kon sakto ba
     console.log("Checking Supabase URL:", supabaseUrl);
@@ -15,9 +14,9 @@ export const useSignUp = () => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        emailRedirectTo: redirectTo,
-      },
+      // options: {
+      //   emailRedirectTo: redirectTo,
+      // },
     });
 
     if (error) {

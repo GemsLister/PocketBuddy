@@ -1,4 +1,5 @@
 import * as Buttons from "@/src/components/buttons/buttonsIndex";
+import Calculator from "@/src/components/calculator/Calculator";
 import { Ionicons } from "@expo/vector-icons";
 import { ComponentProps, ReactNode, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
@@ -19,6 +20,8 @@ export default function CategoriesContainer({ icons, view }: CategoriesProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [amount, setAmount] = useState("");
   const [note, setNote] = useState("");
+  const [showCalculator, setShowCalculator] = useState(false);
+  const [showNoteInput, setShowNoteInput] = useState(false);
 
   return (
     <View
@@ -47,6 +50,7 @@ export default function CategoriesContainer({ icons, view }: CategoriesProps) {
                   setSelectedCategory(item.name);
                   setAmount("");
                   setNote("");
+                  setShowCalculator(true);
                 }}
                 className={`rounded-3xl justify-center gap-3 ${isSelected ? "bg-leaf" : "bg-beige"}`}
                 style={{
@@ -84,55 +88,54 @@ export default function CategoriesContainer({ icons, view }: CategoriesProps) {
         </View>
       </View>
 
-      {selectedCategory && (
+      {selectedCategory && showNoteInput && (
         <View style={{ gap: ms(12, 0.5), marginTop: vs(10) }}>
           <View className="flex-row justify-between">
             <Text
               className="font-nunito-bold text-moss"
               style={{ fontSize: vs(15) }}
             >
-              {selectedCategory}
+              {selectedCategory} - ₱{amount}
             </Text>
             <Pressable
               onPress={() => {
                 setSelectedCategory(null);
                 setAmount("");
                 setNote("");
+                setShowNoteInput(false);
               }}
             >
               <Ionicons name="close-outline" size={vs(20)} color={"#385a41"} />
             </Pressable>
           </View>
 
-          {[
-            {
-              text: "Amount",
-              onChange: setAmount,
-            },
-            {
-              text: "Note (Optional)",
-              onChange: setNote,
-            },
-          ].map((items, index) => (
-            <TextInput
-              key={index}
-              className="font-nunito text-moss border border-slate-400"
-              style={{
-                fontSize: ms(16, 0.5),
-                borderRadius: ms(13, 0.3),
-                paddingVertical: ms(10, 0.5),
-                paddingHorizontal: ms(14, 0.5),
-              }}
-              placeholder={items.text}
-              placeholderTextColor="#94a3b8"
-              keyboardType="decimal-pad"
-              value={amount}
-              onChangeText={items.onChange}
-            />
-          ))}
-          <Buttons.PrimaryButton text="Ok" link={"/"} />
+          {/* Note Input */}
+          <TextInput
+            className="font-nunito text-moss border border-slate-400"
+            style={{
+              fontSize: ms(16, 0.5),
+              borderRadius: ms(13, 0.3),
+              paddingVertical: ms(10, 0.5),
+              paddingHorizontal: ms(14, 0.5),
+            }}
+            placeholder="Add Note (Optional)"
+            placeholderTextColor="#94a3b8"
+            value={note}
+            onChangeText={setNote}
+          />
+          <Buttons.PrimaryButton text="Ok" onPress={"/"} />
         </View>
       )}
+
+      <Calculator
+        visible={showCalculator}
+        onClose={() => setShowCalculator(false)}
+        onConfirm={(value) => {
+          setAmount(value);
+          setShowCalculator(false);
+          setShowNoteInput(true);
+        }}
+      />
     </View>
   );
 }

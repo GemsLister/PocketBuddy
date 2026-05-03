@@ -2,6 +2,7 @@ import { useCalculator } from "@/src/hooks/transaction/useCalculator";
 import { Ionicons } from "@expo/vector-icons";
 import { Modal, Pressable, Text, View } from "react-native";
 import { ms, vs } from "react-native-size-matters";
+import CalculatorControlKeys from "./CalculatorControlKeys";
 import CalculatorGrid from "./CalculatorGrid";
 
 type CalculatorProps = {
@@ -26,13 +27,6 @@ export default function Calculator({
     handleBackspace,
     handleConfirm,
   } = useCalculator(onConfirm, onClose);
-
-  const buttons = [
-    ["7", "8", "9", "÷"],
-    ["4", "5", "6", "×"],
-    ["1", "2", "3", "-"],
-    ["0", ".", "=", "+"],
-  ];
 
   return (
     <Modal visible={visible} transparent animationType="fade">
@@ -66,6 +60,7 @@ export default function Calculator({
             </Text>
           </View>
 
+          {/* Calculator Numbers and Operations */}
           <CalculatorGrid
             onNumberPress={handleNumberPress}
             onOperationPress={handleOperation}
@@ -73,49 +68,13 @@ export default function Calculator({
             onEqualsPress={handleEquals}
           />
 
-          {/* Control Buttons */}
-          <View
-            className="flex-row"
-            style={{ gap: ms(8, 0.3), marginBottom: ms(12, 0.5) }}
-          >
-            <Pressable
-              onPress={handleBackspace}
-              className="bg-rose-100 flex-1 rounded-2xl items-center justify-center"
-              style={{ paddingVertical: ms(12, 0.5) }}
-            >
-              <Ionicons
-                name="backspace-outline"
-                size={vs(20)}
-                color="#b91c1c"
-              />
-            </Pressable>
-            <Pressable
-              onPress={handleClear}
-              className="bg-rose-100 flex-1 rounded-2xl items-center"
-              style={{ paddingVertical: ms(12, 0.5) }}
-            >
-              <Text
-                className="font-nunito-bold text-red-700"
-                style={{ fontSize: ms(14, 0.5) }}
-              >
-                Clear
-              </Text>
-            </Pressable>
-          </View>
-
-          {/* Confirm Button */}
-          <Pressable
-            onPress={handleConfirm}
-            className="bg-leaf rounded-2xl items-center justify-center"
-            style={{ paddingVertical: ms(14, 0.5) }}
-          >
-            <Text
-              className="font-nunito-bold text-white"
-              style={{ fontSize: ms(16, 0.5) }}
-            >
-              Confirm
-            </Text>
-          </Pressable>
+          {/* Calculator Control Keys */}
+          <CalculatorControlKeys
+            display={display}
+            onConfirm={handleConfirm}
+            onBackspace={handleBackspace}
+            onClear={handleClear}
+          />
         </View>
       </View>
     </Modal>

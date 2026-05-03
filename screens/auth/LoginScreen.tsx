@@ -74,7 +74,7 @@ export default function LoginScreen() {
             }}
           >
             <View style={{ marginBottom: ms(10, 0.8), gap: ms(15, 0.5) }}>
-              <Buttons.GoogleButton />
+              {/* <Buttons.GoogleButton /> */}
               <View className="items-center">
                 <Text
                   className="font-nunito-semibold text-moss"

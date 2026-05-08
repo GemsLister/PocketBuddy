@@ -1,7 +1,8 @@
 import SecondaryButton from "@/src/components/buttons/SecondaryButton";
 import ScreenContainer from "@/src/components/container/ScreenContainer";
+import { useProfile } from "@/src/hooks/auth/useProfile";
 import { Ionicons } from "@expo/vector-icons";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View, ActivityIndicator } from "react-native";
 import { ms, vs } from "react-native-size-matters";
 
 // ---------- Types (ready for backend integration) ----------
@@ -93,8 +94,7 @@ function SettingsRow({ item }: { item: SettingsItem }) {
 
 // ---------- Main Screen ----------
 export default function ProfileScreen() {
-  // Placeholder — will be populated via backend / state later
-  const user: UserProfile | null = null;
+  const { user, loading, error } = useProfile();
 
   return (
     <ScreenContainer showAddButton={false}>
@@ -107,26 +107,44 @@ export default function ProfileScreen() {
           gap: vs(24),
         }}
       >
+        {/* --- Loading State --- */}
+        {loading && (
+          <View className="items-center justify-center" style={{ height: vs(300) }}>
+            <ActivityIndicator size="large" color="#588157" />
+          </View>
+        )}
+
+        {/* --- Error State --- */}
+        {error && !loading && (
+          <View className="items-center justify-center bg-red-50 p-4" style={{ borderRadius: ms(8, 0.3) }}>
+            <Text className="font-nunito text-red-600 text-center">
+              {error}
+            </Text>
+          </View>
+        )}
+
         {/* --- Profile Header --- */}
-        <AvatarSection user={user} />
+        {!loading && !error && <AvatarSection user={user} />}
 
         {/* --- Settings List --- */}
-        <View style={{ gap: vs(10) }}>
-          <Text
-            className="font-nunito-bold text-moss"
-            style={{ fontSize: ms(14, 0.5), marginLeft: ms(4, 0.3) }}
-          >
-            Settings
-          </Text>
-          <View style={{ gap: vs(8) }}>
-            {settingsItems.map((item) => (
-              <SettingsRow key={item.id} item={item} />
-            ))}
+        {!loading && !error && (
+          <View style={{ gap: vs(10) }}>
+            <Text
+              className="font-nunito-bold text-moss"
+              style={{ fontSize: ms(14, 0.5), marginLeft: ms(4, 0.3) }}
+            >
+              Settings
+            </Text>
+            <View style={{ gap: vs(8) }}>
+              {settingsItems.map((item) => (
+                <SettingsRow key={item.id} item={item} />
+              ))}
+            </View>
           </View>
-        </View>
+        )}
 
         {/* --- Logout --- */}
-        <SecondaryButton text="Log Out" link="/(auth)/login" />
+        {!loading && <SecondaryButton text="Log Out" link="/(auth)/login" />}
       </ScrollView>
     </ScreenContainer>
   );

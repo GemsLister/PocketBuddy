@@ -38,11 +38,17 @@ export default function CalculatorGrid({
               <Pressable
                 key={btnIndex}
                 onPress={() => {
-                  if (btn === "=") onEqualsPress();
-                  else if (["+", "-", "×", "÷"].includes(btn))
+                  if (btn === "=") {
+                    console.log(btn + btn);
+                    onEqualsPress();
+                  } else if (["+", "-", "×", "÷"].includes(btn)) {
+                    console.log(btn);
                     onOperationPress(btn);
-                  else if (btn === ".") onDecimalPress();
-                  else onNumberPress(btn);
+                  } else if (btn === ".") onDecimalPress();
+                  else {
+                    console.log(btn);
+                    onNumberPress(btn);
+                  }
                 }}
                 className={`${bgColor} rounded-2xl flex-1 items-center justify-center`}
                 style={{ paddingVertical: ms(14, 0.5) }}

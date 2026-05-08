@@ -6,6 +6,7 @@ import { View } from "react-native";
 import { vs } from "react-native-size-matters";
 
 export default function RegisterScreen() {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { handleSignUp } = useSignUp();
@@ -14,9 +15,15 @@ export default function RegisterScreen() {
       label="Create Account"
       screenTitle="Let's Get Started!"
       text="Enter your personal details"
-      onPress={() => handleSignUp(email, password)}
+      onPress={() => handleSignUp(username, email, password)}
     >
       <View style={{ gap: vs(10) }}>
+        <TextInputs
+          placeholder="Username"
+          secure={false}
+          value={username}
+          onChangeText={(text) => setUsername(text)}
+        />
         <TextInputs
           placeholder="Email"
           secure={false}

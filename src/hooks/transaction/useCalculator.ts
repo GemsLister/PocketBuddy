@@ -45,7 +45,8 @@ export const useCalculator = (
   const calculate = (prev: number, current: number, op: string): number => {
     switch (op) {
       case "+":
-        return prev + current;
+        const result = prev + current;
+        console.log(result);
       case "-":
         return prev - current;
       case "×":

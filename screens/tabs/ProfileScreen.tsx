@@ -2,7 +2,13 @@ import SecondaryButton from "@/src/components/buttons/SecondaryButton";
 import ScreenContainer from "@/src/components/container/ScreenContainer";
 import { useProfile } from "@/src/hooks/auth/useProfile";
 import { Ionicons } from "@expo/vector-icons";
-import { ScrollView, Text, TouchableOpacity, View, ActivityIndicator } from "react-native";
+import {
+  ActivityIndicator,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { ms, vs } from "react-native-size-matters";
 
 // ---------- Types (ready for backend integration) ----------
@@ -109,14 +115,20 @@ export default function ProfileScreen() {
       >
         {/* --- Loading State --- */}
         {loading && (
-          <View className="items-center justify-center" style={{ height: vs(300) }}>
+          <View
+            className="items-center justify-center"
+            style={{ height: vs(300) }}
+          >
             <ActivityIndicator size="large" color="#588157" />
           </View>
         )}
 
         {/* --- Error State --- */}
         {error && !loading && (
-          <View className="items-center justify-center bg-red-50 p-4" style={{ borderRadius: ms(8, 0.3) }}>
+          <View
+            className="items-center justify-center bg-red-50 p-4"
+            style={{ borderRadius: ms(8, 0.3) }}
+          >
             <Text className="font-nunito text-red-600 text-center">
               {error}
             </Text>

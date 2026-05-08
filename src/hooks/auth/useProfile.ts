@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import { supabase } from "@/src/lib/supabase";
+import { useEffect, useState } from "react";
 
 type UserProfile = {
   name: string;

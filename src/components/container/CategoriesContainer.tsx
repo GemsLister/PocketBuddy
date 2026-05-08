@@ -1,8 +1,9 @@
 import * as Buttons from "@/src/components/buttons/buttonsIndex";
 import Calculator from "@/src/components/calculator/Calculator";
+import { useSaveIncome } from "@/src/hooks/transaction/useSaveIncome";
 import { Ionicons } from "@expo/vector-icons";
 import { ComponentProps, ReactNode, useState } from "react";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Alert, Pressable, Text, TextInput, View } from "react-native";
 import { ms, vs } from "react-native-size-matters";
 type IoniconsName = ComponentProps<typeof Ionicons>["name"];
 
@@ -22,6 +23,8 @@ export default function CategoriesContainer({ icons, view }: CategoriesProps) {
   const [note, setNote] = useState("");
   const [showCalculator, setShowCalculator] = useState(false);
   const [showNoteInput, setShowNoteInput] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const { saveIncome } = useSaveIncome();
 
   return (
     <View
@@ -123,7 +126,29 @@ export default function CategoriesContainer({ icons, view }: CategoriesProps) {
             value={note}
             onChangeText={setNote}
           />
-          <Buttons.PrimaryButton text="Ok" onPress={"/"} />
+          <Buttons.PrimaryButton
+            text={isSaving ? "Saving..." : "Ok"}
+            onPress={async () => {
+              setIsSaving(true);
+              const result = await saveIncome({
+                category: selectedCategory,
+                amount,
+                note,
+              });
+
+              if (result.success) {
+                Alert.alert("Success", "Income saved successfully!");
+                // Reset form
+                setSelectedCategory(null);
+                setAmount("");
+                setNote("");
+                setShowNoteInput(false);
+              } else {
+                Alert.alert("Error", result.error || "Failed to save income");
+              }
+              setIsSaving(false);
+            }}
+          />
         </View>
       )}
 

@@ -6,18 +6,22 @@ import TransactionItem, {
   Transaction,
   TransactionType,
 } from "@/src/components/records/TransactionItem";
+import { supabase } from "@/src/lib/supabase";
 import {
   calculateSummary,
   groupTransactionsByDate,
 } from "@/src/utils/transactionHelpers";
-import { useMemo, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { useEffect, useMemo, useState } from "react";
+import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+
 import { ms, vs } from "react-native-size-matters";
 
 // ---------- Main Screen ----------
 export default function RecordsScreen() {
-  // TODO: Replace with backend data / global state
-  const [transactions] = useState<Transaction[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState<TransactionType | "all">("all");
 
@@ -55,8 +59,94 @@ export default function RecordsScreen() {
     [filteredTransactions],
   );
 
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadTransactions = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        const {
+          data: { session },
+          error: sessionError,
+        } = await supabase.auth.getSession();
+
+        if (sessionError || !session?.user) {
+          throw new Error("User not authenticated. Please log in again.");
+        }
+
+        const { data, error: queryError } = await supabase
+          .from("transactions")
+          .select("id, type, category, amount, note, transaction_date")
+          .eq("user_id", session.user.id)
+          .order("transaction_date", { ascending: false });
+
+        if (queryError) {
+          throw new Error(queryError.message);
+        }
+
+        const mapped: Transaction[] = (data ?? []).map((row: any) => {
+          // Guardrail para sa imong case: naa'y expense categories nga naay maling `type` = "income" sa DB.
+          // Optional: temp fix ni hangtod ma-correct ang data sa Supabase.
+          const expenseCategories = new Set([
+            "Foods",
+            "Transport",
+            "Bills",
+            "Shopping",
+            "Health",
+            "Self-Care",
+          ]);
+
+          const dbType = row.type as TransactionType;
+          const category = String(row.category ?? "");
+
+          const normalizedType: TransactionType = expenseCategories.has(
+            category,
+          )
+            ? "expense"
+            : dbType;
+
+          return {
+            id: row.id,
+            type: normalizedType,
+            category: row.category,
+            amount:
+              typeof row.amount === "string"
+                ? parseFloat(row.amount)
+                : row.amount,
+            description: row.note ?? undefined,
+            date: row.transaction_date,
+            icon:
+              normalizedType === "income"
+                ? "cash-outline"
+                : "fast-food-outline",
+          };
+        });
+
+        if (isMounted) {
+          setTransactions(mapped);
+        }
+      } catch (e) {
+        const message = e instanceof Error ? e.message : "Unknown error";
+        if (isMounted) {
+          setError(message);
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadTransactions();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const handleTransactionPress = (transaction: Transaction) => {
-    // TODO: Navigate to transaction detail screen or open edit modal
     console.log("Transaction pressed:", transaction);
   };
 
@@ -120,7 +210,17 @@ export default function RecordsScreen() {
             Transactions
           </Text>
 
-          {filteredTransactions.length === 0 ? (
+          {isLoading ? (
+            <View style={{ paddingVertical: vs(30) }}>
+              <ActivityIndicator size="large" color="#588157" />
+              <Text
+                className="font-nunito text-beige"
+                style={{ marginTop: vs(12) }}
+              >
+                Loading...
+              </Text>
+            </View>
+          ) : filteredTransactions.length === 0 ? (
             <EmptyState
               message={
                 searchQuery || filterType !== "all"

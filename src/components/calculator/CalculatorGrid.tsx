@@ -39,7 +39,7 @@ export default function CalculatorGrid({
                 key={btnIndex}
                 onPress={() => {
                   if (btn === "=") {
-                    console.log(btn + btn);
+                    console.log(btn);
                     onEqualsPress();
                   } else if (["+", "-", "×", "÷"].includes(btn)) {
                     console.log(btn);

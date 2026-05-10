@@ -1,11 +1,8 @@
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "@/src/lib/supabase";
 import { useRouter } from "expo-router";
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || "";
-const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || "";
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-const router = useRouter();
 export const useLogin = () => {
+  const router = useRouter();
   async function handleLogin(email: string, password: string) {
     const { data, error } = await supabase.auth.signInWithPassword({
       email: email,

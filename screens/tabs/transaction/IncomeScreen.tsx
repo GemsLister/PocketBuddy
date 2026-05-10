@@ -23,5 +23,5 @@ export default function IncomeScreen() {
       icon: "ellipsis-horizontal-outline",
     },
   ];
-  return <TransactionScreenContainer icons={incomeIcons} />;
+  return <TransactionScreenContainer icons={incomeIcons} type="income" />;
 }

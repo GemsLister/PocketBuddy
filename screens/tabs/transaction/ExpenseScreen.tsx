@@ -31,5 +31,5 @@ export default function ExpenseScreen() {
       icon: "body-outline",
     },
   ];
-  return <TransactionScreenContainer icons={expenseIcons} />;
+  return <TransactionScreenContainer icons={expenseIcons} type="expense" />;
 }

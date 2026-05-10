@@ -1,6 +1,6 @@
 import * as Buttons from "@/src/components/buttons/buttonsIndex";
 import Calculator from "@/src/components/calculator/Calculator";
-import { useSaveIncome } from "@/src/hooks/transaction/useSaveIncome";
+import { useSaveTransaction } from "@/src/hooks/transaction/useSaveTransaction";
 import { Ionicons } from "@expo/vector-icons";
 import { ComponentProps, ReactNode, useState } from "react";
 import { Alert, Pressable, Text, TextInput, View } from "react-native";
@@ -15,16 +15,21 @@ type CategoryItem = {
 type CategoriesProps = {
   icons: CategoryItem[];
   view: string;
+  type: "income" | "expense";
 };
 
-export default function CategoriesContainer({ icons, view }: CategoriesProps) {
+export default function CategoriesContainer({
+  icons,
+  view,
+  type,
+}: CategoriesProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [amount, setAmount] = useState("");
   const [note, setNote] = useState("");
   const [showCalculator, setShowCalculator] = useState(false);
   const [showNoteInput, setShowNoteInput] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const { saveIncome } = useSaveIncome();
+  const { saveTransaction } = useSaveTransaction();
 
   return (
     <View
@@ -77,7 +82,6 @@ export default function CategoriesContainer({ icons, view }: CategoriesProps) {
                       item.icon
                     )}
                   </View>
-
                   <Text
                     className={`font-nunito-bold ${isSelected ? "text-white" : "text-moss"}`}
                     style={{ fontSize: vs(10) }}
@@ -130,21 +134,24 @@ export default function CategoriesContainer({ icons, view }: CategoriesProps) {
             text={isSaving ? "Saving..." : "Ok"}
             onPress={async () => {
               setIsSaving(true);
-              const result = await saveIncome({
+              const result = await saveTransaction({
+                type,
                 category: selectedCategory,
                 amount,
                 note,
               });
 
               if (result.success) {
-                Alert.alert("Success", "Income saved successfully!");
+                const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
+                Alert.alert("Success", `${typeLabel} saved successfully!`);
                 // Reset form
                 setSelectedCategory(null);
                 setAmount("");
                 setNote("");
                 setShowNoteInput(false);
               } else {
-                Alert.alert("Error", result.error || "Failed to save income");
+                const typeLabel = type.charAt(0).toUpperCase() + type.slice(1);
+                Alert.alert("Error", result.error || `Failed to save ${type}`);
               }
               setIsSaving(false);
             }}

@@ -14,9 +14,13 @@ type CategoryItem = {
 
 type CategoriesProps = {
   icons: CategoryItem[];
+  type?: "income" | "expense";
 };
 
-export default function TransactionScreenContainer({ icons }: CategoriesProps) {
+export default function TransactionScreenContainer({
+  icons,
+  type = "income",
+}: CategoriesProps) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView
@@ -32,7 +36,7 @@ export default function TransactionScreenContainer({ icons }: CategoriesProps) {
           keyboardShouldPersistTaps="handled"
         >
           <Buttons.TransactionButton />
-          <CategoriesContainer icons={icons} view="" />
+          <CategoriesContainer icons={icons} view="" type={type} />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

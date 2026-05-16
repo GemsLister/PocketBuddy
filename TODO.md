@@ -1,17 +1,12 @@
-# Enable Real Phone Development Mode — TODO
+# PocketBuddy - TODO
 
-## Plan (EAS Build — Recommended)
+- [x] Fetch user transactions from Supabase in `RecordsScreen` (instead of using empty local state).
+- [x] Map Supabase rows to `Transaction` shape expected by `SummaryCard`/`TransactionItem`.
+- [x] Display Overview cards: Balance, Income, Expenses using fetched data.
+- [x] Ensure amounts and dates render correctly (including `transaction_date` -> `date`, icon mapping).
+- [x] Added guardrail in `RecordsScreen` to treat known expense categories as `expense` even if DB `type` is wrong.
+- [ ] Run typecheck/lint/tests (at least `npm test` / `npm run lint` / `tsc`) to verify build.
 
-- [x] Step 1: Create `eas.json` with development build profiles
-- [x] Step 2: Verify `app.json` — no changes needed (scheme, package, plugins OK)
-- [ ] Step 3: Run EAS CLI commands (user terminal)
-  - Install EAS CLI: `npm install -g eas-cli`
-  - Login: `eas login`
-  - Initialize project: `eas init` (if new project)
-  - Build dev APK: `eas build --profile development --platform android`
-- [x] Step 4: Metro bundler running in dev-client mode (`npx expo start --dev-client`)
-  - Dev build URL: `exp+pocketbuddy://expo-development-client/?url=http%3A%2F%2F10.0.0.36%3A8081`
-  - Duplicate processes cleaned up; running cleanly on port 8081
-  - Next: Scan QR code from existing dev build, or complete Step 3 to build APK first
+> Note: `npm run lint` currently fails due to pre-existing errors in other files (unrelated to `RecordsScreen`).
 
----
+- [x] Charts tab: computed Pie + Bar (top categories impact) using chart.js dependency style approach (rendered as computed lists/bars to avoid missing native chart renderer).

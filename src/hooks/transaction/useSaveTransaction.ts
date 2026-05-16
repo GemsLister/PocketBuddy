@@ -2,7 +2,7 @@ import { supabase } from "@/src/lib/supabase";
 
 // ✅ Properly named type for transaction parameters
 type SaveTransactionParams = {
-  type: "income" | "expense" | "transfer";
+  type: "income" | "expense";
   category: string;
   amount: string;
   note?: string;

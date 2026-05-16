@@ -29,8 +29,6 @@ export default function TransactionItem({
         return { bg: "bg-green-50", icon: "#588157", text: "text-leaf" };
       case "expense":
         return { bg: "bg-red-50", icon: "#dc2626", text: "text-red-600" };
-      // case "transfer":
-      //   return { bg: "bg-blue-50", icon: "#2563eb", text: "text-blue-600" };
     }
   };
 

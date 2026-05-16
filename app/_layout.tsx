@@ -1,6 +1,9 @@
 import "@/global.css";
+import { ToastProvider } from "@/src/components/toast/ToastProvider";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
     "Nunito-Regular": require("@/assets/fonts/Nunito/Nunito-Regular.ttf"),
@@ -8,5 +11,11 @@ export default function RootLayout() {
     "Nunito-Bold": require("@/assets/fonts/Nunito/Nunito-Bold.ttf"),
   });
   if (!fontsLoaded) return null;
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <SafeAreaProvider>
+      <ToastProvider>
+        <Stack screenOptions={{ headerShown: false }} />
+      </ToastProvider>
+    </SafeAreaProvider>
+  );
 }

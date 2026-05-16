@@ -1,5 +1,5 @@
 import { supabase } from "@/src/lib/supabase";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // ---------- Types ----------
 export type ChatMessage = {
@@ -16,9 +16,31 @@ type UseChatReturn = {
   isSending: boolean;
   error: string | null;
   sessionId: string | null;
+  rateLimitSeconds: number | null;
   sendMessage: (text: string) => Promise<void>;
   clearChat: () => void;
 };
+
+// ---------- Helpers ----------
+/** Try to extract the retry delay (in seconds) from a 429 error message. */
+function parseRetrySeconds(errorMsg: string): number | null {
+  // Match patterns like "retry in 34.556254375s" or "retryDelay": "34s"
+  const match = errorMsg.match(/retry\s*(?:in|Delay["\s:]*)\s*"?(\d+(?:\.\d+)?)\s*s/i);
+  if (match) {
+    return Math.ceil(parseFloat(match[1]));
+  }
+  return null;
+}
+
+/** Check if an error message indicates a 429 rate limit. */
+function isRateLimitError(errorMsg: string): boolean {
+  return (
+    errorMsg.includes("429") ||
+    errorMsg.includes("RESOURCE_EXHAUSTED") ||
+    errorMsg.includes("exceeded your current quota") ||
+    errorMsg.includes("rate limit")
+  );
+}
 
 // ---------- Hook ----------
 export function useChat(): UseChatReturn {
@@ -27,6 +49,39 @@ export function useChat(): UseChatReturn {
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const [rateLimitSeconds, setRateLimitSeconds] = useState<number | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // ---------- Countdown timer ----------
+  useEffect(() => {
+    // Clear any existing timer when rateLimitSeconds changes
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+
+    if (rateLimitSeconds !== null && rateLimitSeconds > 0) {
+      timerRef.current = setInterval(() => {
+        setRateLimitSeconds((prev) => {
+          if (prev === null || prev <= 1) {
+            // Timer done — clear everything
+            if (timerRef.current) clearInterval(timerRef.current);
+            timerRef.current = null;
+            setError(null);
+            return null;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [rateLimitSeconds !== null && rateLimitSeconds > 0]);
 
   // Load existing session on mount
   useEffect(() => {
@@ -91,7 +146,8 @@ export function useChat(): UseChatReturn {
   // Send a message to the Edge Function
   const sendMessage = useCallback(
     async (text: string) => {
-      if (isSending) return;
+      if (isSending || (rateLimitSeconds !== null && rateLimitSeconds > 0))
+        return;
       setIsSending(true);
       setError(null);
 
@@ -141,8 +197,18 @@ export function useChat(): UseChatReturn {
           ];
         });
       } catch (e) {
-        const msg = e instanceof Error ? e.message : "Something went wrong";
-        setError(msg);
+        const rawMsg =
+          e instanceof Error ? e.message : "Something went wrong";
+
+        // Check if this is a rate limit error
+        if (isRateLimitError(rawMsg)) {
+          const retrySec = parseRetrySeconds(rawMsg);
+          // Default to 60 seconds if we can't parse the exact time
+          setRateLimitSeconds(retrySec ?? 60);
+          setError("API quota reached. Please wait for the timer to reset.");
+        } else {
+          setError(rawMsg);
+        }
 
         // Mark the optimistic message as failed
         setMessages((prev) =>
@@ -154,7 +220,7 @@ export function useChat(): UseChatReturn {
         setIsSending(false);
       }
     },
-    [isSending, sessionId],
+    [isSending, sessionId, rateLimitSeconds],
   );
 
   // Clear chat and start a new session
@@ -162,6 +228,7 @@ export function useChat(): UseChatReturn {
     setMessages([]);
     setSessionId(null);
     setError(null);
+    setRateLimitSeconds(null);
   }, []);
 
   return {
@@ -170,7 +237,9 @@ export function useChat(): UseChatReturn {
     isSending,
     error,
     sessionId,
+    rateLimitSeconds,
     sendMessage,
     clearChat,
   };
 }
+

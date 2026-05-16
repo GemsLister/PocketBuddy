@@ -22,10 +22,6 @@ export default function TransactionButton() {
       path: "/(transaction)/income",
       name: "Income",
     },
-    {
-      path: "/(transaction)/transfer",
-      name: "Transfer",
-    },
   ];
 
   return (

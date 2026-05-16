@@ -26,7 +26,6 @@ export default function TransactionLayout() {
       {/* Explicitly defining screens is cleaner for debugging names */}
       <Stack.Screen name="expense" />
       <Stack.Screen name="income" />
-      <Stack.Screen name="transfer" />
     </Stack>
   );
 }

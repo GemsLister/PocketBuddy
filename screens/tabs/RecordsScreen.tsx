@@ -8,13 +8,26 @@ import TransactionItem, {
 } from "@/src/components/records/TransactionItem";
 import { supabase } from "@/src/lib/supabase";
 import {
+  buildMarkedDates,
   calculateSummary,
+  formatDateHeader,
   groupTransactionsByDate,
+  toDateKey,
 } from "@/src/utils/transactionHelpers";
+import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useMemo, useState } from "react";
-import { ActivityIndicator, ScrollView, Text, View } from "react-native";
-
+import {
+  ActivityIndicator,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Calendar, DateData } from "react-native-calendars";
 import { ms, vs } from "react-native-size-matters";
+
+// ---------- View Mode Type ----------
+type ViewMode = "list" | "calendar";
 
 // ---------- Main Screen ----------
 export default function RecordsScreen() {
@@ -24,6 +37,12 @@ export default function RecordsScreen() {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState<TransactionType | "all">("all");
+
+  // Calendar state
+  const [viewMode, setViewMode] = useState<ViewMode>("list");
+  const [selectedDate, setSelectedDate] = useState<string>(
+    toDateKey(new Date()),
+  );
 
   // Calculate summary stats
   const summary = useMemo(() => calculateSummary(transactions), [transactions]);
@@ -53,10 +72,32 @@ export default function RecordsScreen() {
     );
   }, [transactions, filterType, searchQuery]);
 
-  // Group transactions by date
+  // Group transactions by date (for list view)
   const groupedTransactions = useMemo(
     () => groupTransactionsByDate(filteredTransactions),
     [filteredTransactions],
+  );
+
+  // Calendar: marked dates (based on ALL transactions, ignoring filters)
+  const markedDates = useMemo(
+    () => buildMarkedDates(transactions, selectedDate),
+    [transactions, selectedDate],
+  );
+
+  // Calendar: transactions for the selected date
+  const selectedDayTransactions = useMemo(() => {
+    if (!selectedDate) return [];
+    return transactions
+      .filter((t) => toDateKey(t.date) === selectedDate)
+      .sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+      );
+  }, [transactions, selectedDate]);
+
+  // Calendar: summary for the selected date
+  const selectedDaySummary = useMemo(
+    () => calculateSummary(selectedDayTransactions),
+    [selectedDayTransactions],
   );
 
   useEffect(() => {
@@ -150,6 +191,10 @@ export default function RecordsScreen() {
     console.log("Transaction pressed:", transaction);
   };
 
+  const handleDayPress = (day: DateData) => {
+    setSelectedDate(day.dateString);
+  };
+
   return (
     <ScreenContainer showAddButton={true}>
       <ScrollView
@@ -193,66 +238,296 @@ export default function RecordsScreen() {
           </View>
         </View>
 
-        {/* --- Filter Bar --- */}
-        <FilterBar
-          searchQuery={searchQuery}
-          onSearchChange={setSearchQuery}
-          activeFilter={filterType}
-          onFilterChange={setFilterType}
-        />
+        {/* --- Filter Bar (only in list mode) --- */}
+        {viewMode === "list" && (
+          <FilterBar
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            activeFilter={filterType}
+            onFilterChange={setFilterType}
+          />
+        )}
 
-        {/* --- Transactions List --- */}
+        {/* --- View Mode Toggle + Transactions Header --- */}
         <View style={{ gap: vs(16) }}>
-          <Text
-            className="font-nunito-bold text-moss"
-            style={{ fontSize: ms(18, 0.5) }}
-          >
-            Transactions
-          </Text>
+          <View className="flex-row items-center justify-between">
+            <Text
+              className="font-nunito-bold text-moss"
+              style={{ fontSize: ms(18, 0.5) }}
+            >
+              Transactions
+            </Text>
 
-          {isLoading ? (
-            <View style={{ paddingVertical: vs(30) }}>
-              <ActivityIndicator size="large" color="#588157" />
-              <Text
-                className="font-nunito text-beige"
-                style={{ marginTop: vs(12) }}
+            {/* Toggle Buttons */}
+            <View
+              className="flex-row bg-white"
+              style={{
+                borderRadius: ms(10, 0.3),
+                overflow: "hidden",
+              }}
+            >
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => setViewMode("list")}
+                style={{
+                  paddingHorizontal: ms(12, 0.5),
+                  paddingVertical: vs(6),
+                  backgroundColor:
+                    viewMode === "list" ? "#385a41" : "transparent",
+                  borderRadius: ms(10, 0.3),
+                }}
               >
-                Loading...
-              </Text>
+                <Ionicons
+                  name="list-outline"
+                  size={ms(18, 0.5)}
+                  color={viewMode === "list" ? "#ffffff" : "#385a41"}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => setViewMode("calendar")}
+                style={{
+                  paddingHorizontal: ms(12, 0.5),
+                  paddingVertical: vs(6),
+                  backgroundColor:
+                    viewMode === "calendar" ? "#385a41" : "transparent",
+                  borderRadius: ms(10, 0.3),
+                }}
+              >
+                <Ionicons
+                  name="calendar-outline"
+                  size={ms(18, 0.5)}
+                  color={viewMode === "calendar" ? "#ffffff" : "#385a41"}
+                />
+              </TouchableOpacity>
             </View>
-          ) : filteredTransactions.length === 0 ? (
-            <EmptyState
-              message={
-                searchQuery || filterType !== "all"
-                  ? "No transactions found"
-                  : "No transactions yet"
-              }
-            />
-          ) : (
-            <View style={{ gap: vs(20) }}>
-              {Object.entries(groupedTransactions).map(([date, items]) => (
-                <View key={date} style={{ gap: vs(10) }}>
-                  {/* Date Header */}
+          </View>
+
+          {/* --- LIST VIEW --- */}
+          {viewMode === "list" && (
+            <>
+              {isLoading ? (
+                <View style={{ paddingVertical: vs(30) }}>
+                  <ActivityIndicator size="large" color="#588157" />
                   <Text
-                    className="font-nunito-semibold text-beige"
-                    style={{ fontSize: ms(13, 0.5), marginLeft: ms(4, 0.3) }}
+                    className="font-nunito text-beige"
+                    style={{ marginTop: vs(12) }}
                   >
-                    {date}
+                    Loading...
+                  </Text>
+                </View>
+              ) : filteredTransactions.length === 0 ? (
+                <EmptyState
+                  message={
+                    searchQuery || filterType !== "all"
+                      ? "No transactions found"
+                      : "No transactions yet"
+                  }
+                />
+              ) : (
+                <View style={{ gap: vs(20) }}>
+                  {Object.entries(groupedTransactions).map(([date, items]) => (
+                    <View key={date} style={{ gap: vs(10) }}>
+                      {/* Date Header */}
+                      <Text
+                        className="font-nunito-semibold text-beige"
+                        style={{
+                          fontSize: ms(13, 0.5),
+                          marginLeft: ms(4, 0.3),
+                        }}
+                      >
+                        {date}
+                      </Text>
+
+                      {/* Transaction Items */}
+                      <View style={{ gap: vs(8) }}>
+                        {items.map((transaction) => (
+                          <TransactionItem
+                            key={transaction.id}
+                            transaction={transaction}
+                            onPress={handleTransactionPress}
+                          />
+                        ))}
+                      </View>
+                    </View>
+                  ))}
+                </View>
+              )}
+            </>
+          )}
+
+          {/* --- CALENDAR VIEW --- */}
+          {viewMode === "calendar" && (
+            <>
+              {isLoading ? (
+                <View style={{ paddingVertical: vs(30) }}>
+                  <ActivityIndicator size="large" color="#588157" />
+                  <Text
+                    className="font-nunito text-beige"
+                    style={{ marginTop: vs(12) }}
+                  >
+                    Loading...
+                  </Text>
+                </View>
+              ) : (
+                <View style={{ gap: vs(16) }}>
+                  {/* Calendar Widget */}
+                  <View
+                    style={{
+                      borderRadius: ms(16, 0.3),
+                      overflow: "hidden",
+                      backgroundColor: "#fff",
+                    }}
+                  >
+                    <Calendar
+                      markingType="multi-dot"
+                      markedDates={markedDates}
+                      onDayPress={handleDayPress}
+                      theme={{
+                        backgroundColor: "#ffffff",
+                        calendarBackground: "#ffffff",
+                        textSectionTitleColor: "#a0b089",
+                        selectedDayBackgroundColor: "#588157",
+                        selectedDayTextColor: "#ffffff",
+                        todayTextColor: "#588157",
+                        dayTextColor: "#385a41",
+                        textDisabledColor: "#dcd8cc",
+                        arrowColor: "#588157",
+                        monthTextColor: "#385a41",
+                        textMonthFontFamily: "Nunito-Bold",
+                        textDayFontFamily: "Nunito-Regular",
+                        textDayHeaderFontFamily: "Nunito-SemiBold",
+                        textMonthFontSize: ms(16, 0.5),
+                        textDayFontSize: ms(14, 0.5),
+                        textDayHeaderFontSize: ms(12, 0.5),
+                      }}
+                    />
+                  </View>
+
+                  {/* Dot Legend */}
+                  <View
+                    className="flex-row items-center justify-center"
+                    style={{ gap: ms(20, 0.5) }}
+                  >
+                    <View
+                      className="flex-row items-center"
+                      style={{ gap: ms(6, 0.3) }}
+                    >
+                      <View
+                        style={{
+                          width: ms(8, 0.3),
+                          height: ms(8, 0.3),
+                          borderRadius: ms(4, 0.3),
+                          backgroundColor: "#588157",
+                        }}
+                      />
+                      <Text
+                        className="font-nunito-semibold text-beige"
+                        style={{ fontSize: ms(12, 0.5) }}
+                      >
+                        Income
+                      </Text>
+                    </View>
+                    <View
+                      className="flex-row items-center"
+                      style={{ gap: ms(6, 0.3) }}
+                    >
+                      <View
+                        style={{
+                          width: ms(8, 0.3),
+                          height: ms(8, 0.3),
+                          borderRadius: ms(4, 0.3),
+                          backgroundColor: "#dc2626",
+                        }}
+                      />
+                      <Text
+                        className="font-nunito-semibold text-beige"
+                        style={{ fontSize: ms(12, 0.5) }}
+                      >
+                        Expense
+                      </Text>
+                    </View>
+                  </View>
+
+                  {/* Selected Day Header */}
+                  <Text
+                    className="font-nunito-bold text-moss"
+                    style={{ fontSize: ms(16, 0.5) }}
+                  >
+                    {formatDateHeader(selectedDate)}
                   </Text>
 
-                  {/* Transaction Items */}
-                  <View style={{ gap: vs(8) }}>
-                    {items.map((transaction) => (
-                      <TransactionItem
-                        key={transaction.id}
-                        transaction={transaction}
-                        onPress={handleTransactionPress}
-                      />
-                    ))}
-                  </View>
+                  {/* Selected Day Summary Cards */}
+                  {selectedDayTransactions.length > 0 && (
+                    <View className="flex-row" style={{ gap: ms(10, 0.5) }}>
+                      <View
+                        className="flex-1 bg-white"
+                        style={{
+                          padding: ms(12, 0.5),
+                          borderRadius: ms(12, 0.3),
+                          gap: vs(4),
+                        }}
+                      >
+                        <Text
+                          className="font-nunito text-beige"
+                          style={{ fontSize: ms(12, 0.5) }}
+                        >
+                          Income
+                        </Text>
+                        <Text
+                          className="font-nunito-bold"
+                          style={{ fontSize: ms(16, 0.5), color: "#588157" }}
+                        >
+                          +₱
+                          {selectedDaySummary.totalIncome.toLocaleString(
+                            "en-PH",
+                          )}
+                        </Text>
+                      </View>
+                      <View
+                        className="flex-1 bg-white"
+                        style={{
+                          padding: ms(12, 0.5),
+                          borderRadius: ms(12, 0.3),
+                          gap: vs(4),
+                        }}
+                      >
+                        <Text
+                          className="font-nunito text-beige"
+                          style={{ fontSize: ms(12, 0.5) }}
+                        >
+                          Expenses
+                        </Text>
+                        <Text
+                          className="font-nunito-bold"
+                          style={{ fontSize: ms(16, 0.5), color: "#dc2626" }}
+                        >
+                          -₱
+                          {selectedDaySummary.totalExpenses.toLocaleString(
+                            "en-PH",
+                          )}
+                        </Text>
+                      </View>
+                    </View>
+                  )}
+
+                  {/* Selected Day Transactions */}
+                  {selectedDayTransactions.length === 0 ? (
+                    <EmptyState message="No transactions on this day" />
+                  ) : (
+                    <View style={{ gap: vs(8) }}>
+                      {selectedDayTransactions.map((transaction) => (
+                        <TransactionItem
+                          key={transaction.id}
+                          transaction={transaction}
+                          onPress={handleTransactionPress}
+                        />
+                      ))}
+                    </View>
+                  )}
                 </View>
-              ))}
-            </View>
+              )}
+            </>
           )}
         </View>
       </ScrollView>

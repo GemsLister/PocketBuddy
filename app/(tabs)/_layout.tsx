@@ -20,6 +20,11 @@ export default function TabRootLayout() {
       icon: "pie-chart-outline",
     },
     {
+      name: "chat",
+      title: "Chat",
+      icon: "sparkles-outline",
+    },
+    {
       name: "profile",
       title: "Profile",
       icon: "person-outline",

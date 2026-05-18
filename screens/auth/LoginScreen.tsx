@@ -10,7 +10,7 @@ import { ms, vs } from "react-native-size-matters";
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { handleLogin } = useLogin();
+  const { handleLogin, loading, error } = useLogin();
   return (
     <SafeAreaView className="flex-1 justify-around items-center">
       <KeyboardAvoidingView
@@ -99,7 +99,7 @@ export default function LoginScreen() {
                 value={password}
               />
               <Buttons.PrimaryButton
-                text={"Login"}
+                text={loading ? "Logging in..." : "Login"}
                 onPress={() => handleLogin(email, password)}
               />
               <Buttons.SecondaryButton

@@ -41,6 +41,19 @@ export const useUpdateProfile = () => {
 
       if (updateError) throw updateError;
 
+      // UPDATE AUTH METADATA: Kini ang sekreto para mo-update ang session
+      // bisag dili mo-logout. Ang Supabase Auth naggamit og metadata
+      // nga gi-cache sa session.
+      await supabase.auth.updateUser({
+        data: {
+          username: username.trim(),
+          avatar_url:
+            avatarUrl !== undefined
+              ? avatarUrl
+              : authUser.user_metadata.avatar_url,
+        },
+      });
+
       showMessage({
         message: "Success",
         description: "Profile updated successfully!",

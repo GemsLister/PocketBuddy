@@ -7,6 +7,8 @@ type TextInputsProps = {
   secure: boolean;
   value: string;
   onChangeText: (text: string) => void;
+  multiline?: boolean;
+  numberOfLines?: number;
 };
 
 export default function TextInputs({
@@ -14,6 +16,8 @@ export default function TextInputs({
   secure,
   value,
   onChangeText,
+  multiline = false,
+  numberOfLines = 1,
 }: TextInputsProps) {
   const [showPassword, setShowPassword] = useState(secure);
   return (
@@ -27,6 +31,8 @@ export default function TextInputs({
         }}
         label={placeholder}
         secureTextEntry={showPassword}
+        multiline={multiline}
+        numberOfLines={numberOfLines}
         outlineStyle={{
           borderRadius: ms(13, 0.3),
           borderWidth: 1, // Keeps the border thin

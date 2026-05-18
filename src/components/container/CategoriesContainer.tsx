@@ -4,13 +4,22 @@ import { useSaveTransaction } from "@/src/hooks/transaction/useSaveTransaction";
 import { Ionicons } from "@expo/vector-icons";
 import { ComponentProps, ReactNode, useState } from "react";
 import {
-  Pressable,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    Dimensions,
+    Pressable,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { ms, vs } from "react-native-size-matters";
+
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const GRID_PADDING = ms(20, 0.7);
+const GRID_GAP = ms(12, 0.5);
+const COLUMN_COUNT = SCREEN_WIDTH > 600 ? 4 : 3; // 4 columns for tablets, 3 for phones
+const ITEM_WIDTH =
+  (SCREEN_WIDTH - GRID_PADDING * 2 - GRID_GAP * (COLUMN_COUNT - 1)) /
+  COLUMN_COUNT;
 
 type IoniconsName = ComponentProps<typeof Ionicons>["name"];
 
@@ -116,14 +125,17 @@ export default function CategoriesContainer({
       </TouchableOpacity>
 
       {/* ---- Category Grid ---- */}
-      <View style={{ gap: vs(10) }}>
+      <View style={{ gap: vs(12) }}>
         <Text
           className="font-nunito-bold text-moss"
           style={{ fontSize: ms(16, 0.5) }}
         >
           Category
         </Text>
-        <View className="flex-row flex-wrap" style={{ gap: ms(10, 0.5) }}>
+        <View
+          className="flex-row flex-wrap"
+          style={{ gap: GRID_GAP, justifyContent: "flex-start" }}
+        >
           {icons.map((item, index) => {
             const isSelected = selectedCategory === item.name;
             return (
@@ -131,29 +143,49 @@ export default function CategoriesContainer({
                 key={index}
                 onPress={() => setSelectedCategory(item.name)}
                 style={{
-                  flexDirection: "row",
+                  width: ITEM_WIDTH,
                   alignItems: "center",
-                  gap: ms(8, 0.3),
-                  paddingVertical: vs(10),
-                  paddingHorizontal: ms(14, 0.5),
-                  borderRadius: ms(12, 0.3),
+                  justifyContent: "center",
+                  gap: vs(8),
+                  paddingVertical: vs(12),
+                  borderRadius: ms(16, 0.3),
                   backgroundColor: isSelected ? COLORS.leaf : COLORS.white,
                   borderWidth: isSelected ? 0 : 1,
                   borderColor: COLORS.trackBg,
+                  shadowColor: isSelected ? COLORS.leaf : "#000",
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: isSelected ? 0.2 : 0.05,
+                  shadowRadius: 4,
+                  elevation: isSelected ? 4 : 1,
                 }}
               >
-                {typeof item.icon === "string" ? (
-                  <Ionicons
-                    name={item.icon as IoniconsName}
-                    size={ms(20, 0.5)}
-                    color={isSelected ? "#ffffff" : COLORS.moss}
-                  />
-                ) : (
-                  item.icon
-                )}
+                <View
+                  style={{
+                    width: ms(40, 0.5),
+                    height: ms(40, 0.5),
+                    borderRadius: ms(20, 0.5),
+                    backgroundColor: isSelected
+                      ? "rgba(255,255,255,0.2)"
+                      : COLORS.trackBg,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {typeof item.icon === "string" ? (
+                    <Ionicons
+                      name={item.icon as IoniconsName}
+                      size={ms(22, 0.5)}
+                      color={isSelected ? "#ffffff" : COLORS.moss}
+                    />
+                  ) : (
+                    item.icon
+                  )}
+                </View>
                 <Text
-                  className={`font-nunito-semibold ${isSelected ? "text-white" : "text-moss"}`}
-                  style={{ fontSize: ms(13, 0.5) }}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                  className={`font-nunito-semibold text-center ${isSelected ? "text-white" : "text-moss"}`}
+                  style={{ fontSize: ms(11, 0.5), width: "90%" }}
                 >
                   {item.name}
                 </Text>

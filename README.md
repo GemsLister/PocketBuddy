@@ -1,50 +1,71 @@
-# Welcome to your Expo app 👋
+# 📱 PocketBuddy
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**PocketBuddy** is a mobile application designed to help you manage your personal finances effortlessly. Track your income, expenses, and transfers with ease.
 
-## Get started
+## 🚀 Features
 
-1. Install dependencies
+- **Authentication**: Secure login, registration, and password recovery using Supabase Auth.
+- **Transaction Records**: Record your expenses and income. Each transaction features a category-specific icon (e.g., Transport 🚌, Foods 🍔, Bills 💧).
+- **Profile Management**:
+  - Upload and update profile pictures to Supabase Storage.
+  - Edit username and bio.
+  - Change password.
+- **Modern Notifications**: Uses `react-native-flash-message` for smooth user feedback (e.g., "Successfully Registered" or "Update Failed").
+- **Clean UI**: Simple and intuitive design powered by NativeWind (Tailwind CSS for React Native).
 
-   ```bash
-   npm install
-   ```
+## 🛠️ Tech Stack
 
-2. Start the app
+- **Framework**: [Expo](https://expo.dev/) (React Native)
+- **Backend/Database**: [Supabase](https://supabase.com/)
+- **Styling**: [NativeWind](https://www.nativewind.dev/) (Tailwind CSS)
+- **Navigation**: [Expo Router](https://docs.expo.dev/router/introduction/)
+- **Icons**: [Ionicons](https://ionicons.com/)
+- **Notifications**: [React Native Flash Message](https://github.com/lucasferreira/react-native-flash-message)
 
-   ```bash
-   npx expo start
-   ```
+## 📦 Installation
 
-In the output, you'll find options to open the app in a
+1.  **Clone the repository**:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+    ```bash
+    git clone <repository-url>
+    cd PocketBuddy
+    ```
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+2.  **Install dependencies**:
 
-## Get a fresh project
+    ```bash
+    npm install
+    ```
 
-When you're ready, run:
+3.  **Setup Environment Variables**:
+    Create a `.env` file in the root directory and add your Supabase credentials:
+    ```env
+    EXPO_PUBLIC_SUPABASE_URL=your_supabase_url
+    EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+    ```
+
+## 🏃 Getting Started
+
+To start the development server:
 
 ```bash
-npm run reset-project
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+To run on your mobile device (Development Build):
 
-## Learn more
+- **Android**: `npx expo run:android`
+- **iOS**: `npx expo run:ios`
 
-To learn more about developing your project with Expo, look at the following resources:
+## 📂 Project Structure
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- `app/`: Expo Router routes and layouts.
+- `screens/`: Core UI components for each screen.
+- `src/components/`: Reusable UI components (buttons, inputs, etc.).
+- `src/hooks/`: Custom React hooks for authentication and data fetching.
+- `src/lib/`: Configuration for Supabase client.
+- `assets/`: Images and fonts used in the app.
 
-## Join the community
+---
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Built with ❤️ for better financial management!

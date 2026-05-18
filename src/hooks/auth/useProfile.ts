@@ -13,54 +13,42 @@ export const useProfile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        // Get the current authenticated user
-        const {
-          data: { user: authUser },
-          error: authError,
-        } = await supabase.auth.getUser();
+  const fetchProfile = async () => {
+    try {
+      setLoading(true);
+      const {
+        data: { user: authUser },
+      } = await supabase.auth.getUser();
 
-        if (authError || !authUser) {
-          setError("User not authenticated");
-          setUser(null);
-          setLoading(false);
-          return;
-        }
-
-        // Fetch the user's profile from the profiles table
-        const { data, error: profileError } = await supabase
-          .from("profiles")
-          .select("username, email, bio, avatar_url")
-          .eq("id", authUser.id)
-          .single();
-
-        if (profileError) {
-          console.log("Profile fetch error:", profileError);
-          setError(profileError.message);
-          setUser(null);
-        } else if (data) {
-          setUser({
-            name: data.username,
-            email: data.email,
-            bio: data.bio ?? "",
-            avatarUrl: data.avatar_url ?? undefined,
-          });
-
-          setError(null);
-        }
-      } catch (err) {
-        console.log("Error fetching profile:", err);
-        setError("Failed to fetch profile");
-        setUser(null);
-      } finally {
+      if (!authUser) {
         setLoading(false);
+        return;
       }
-    };
 
-    fetchUserProfile();
+      const { data, error: profileError } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", authUser.id)
+        .single();
+
+      if (profileError) throw profileError;
+
+      setUser({
+        name: data.username,
+        email: data.email,
+        avatarUrl: data.avatar_url,
+        bio: data.bio,
+      });
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
   }, []);
 
-  return { user, loading, error };
+  return { user, loading, error, refreshProfile: fetchProfile };
 };

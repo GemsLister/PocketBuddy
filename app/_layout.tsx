@@ -1,6 +1,8 @@
 import "@/global.css";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
+import FlashMessage from "react-native-flash-message";
+
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
     "Nunito-Regular": require("@/assets/fonts/Nunito/Nunito-Regular.ttf"),
@@ -8,5 +10,10 @@ export default function RootLayout() {
     "Nunito-Bold": require("@/assets/fonts/Nunito/Nunito-Bold.ttf"),
   });
   if (!fontsLoaded) return null;
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <>
+      <Stack screenOptions={{ headerShown: false }} />
+      <FlashMessage position="top" />
+    </>
+  );
 }

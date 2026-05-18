@@ -1,34 +1,35 @@
-import SecondaryButton from "@/src/components/buttons/SecondaryButton";
-import ScreenContainer from "@/src/components/container/ScreenContainer";
 import { useProfile } from "@/src/hooks/auth/useProfile";
 import { Ionicons } from "@expo/vector-icons";
-import { Link } from "expo-router";
-
+import { Link, useFocusEffect } from "expo-router";
+import { useCallback } from "react";
 import {
-    ActivityIndicator,
-    Image,
-    ScrollView,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-
 import { ms, vs } from "react-native-size-matters";
 
+import SecondaryButton from "@/src/components/buttons/SecondaryButton";
+import ScreenContainer from "@/src/components/container/ScreenContainer";
+
 // ---------- Types ----------
-type UserProfile = {
+
+interface UserProfile {
   name: string;
   email: string;
   bio?: string;
   avatarUrl?: string;
-};
+}
 
-type SettingsItem = {
+interface SettingsItem {
   id: string;
   label: string;
   icon: keyof typeof Ionicons.glyphMap;
   onPress?: () => void;
-};
+}
 
 // ---------- Settings menu definition ----------
 const editProfileItem: SettingsItem = {
@@ -67,7 +68,7 @@ function AvatarSection({ user }: { user: UserProfile | null }) {
         >
           {user?.avatarUrl ? (
             <Image
-              source={{ uri: user.avatarUrl }}
+              source={{ uri: `${user.avatarUrl}?t=${Date.now()}` }}
               style={{ width: "100%", height: "100%" }}
               resizeMode="cover"
             />
@@ -119,7 +120,13 @@ function AvatarSection({ user }: { user: UserProfile | null }) {
 }
 
 export default function ProfileScreen() {
-  const { user, loading, error } = useProfile();
+  const { user, loading, error, refreshProfile } = useProfile();
+
+  useFocusEffect(
+    useCallback(() => {
+      refreshProfile();
+    }, []),
+  );
 
   return (
     <ScreenContainer showAddButton={false}>

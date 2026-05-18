@@ -1,27 +1,75 @@
-import { createClient } from "@supabase/supabase-js";
+import { supabase } from "@/src/lib/supabase";
 import * as Linking from "expo-linking";
 import { useRouter } from "expo-router";
+import { useState } from "react";
+import { showMessage } from "react-native-flash-message";
 
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || "";
-const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || "";
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
 const redirectTo = Linking.createURL("login");
-const router = useRouter();
-// ---cut---
-export const useForgotPassword = () => {
-  const handleForgotPassword = async (email: string) => {
-    if (!email) console.log("Email is empty!");
 
-    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: redirectTo,
-    });
-    if (error) {
-      console.log("Error sending link:", error.message);
-      console.log(error.status);
-    } else {
-      console.log("SUCCESS");
-      router.replace("/(auth)/login");
+export const useForgotPassword = () => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+
+  const handleForgotPassword = async (email: string) => {
+    if (!email) {
+      showMessage({
+        message: "Error",
+        description: "Please enter your email address.",
+        type: "danger",
+        icon: "danger",
+      });
+      return { ok: false };
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+      setSuccess(false);
+      const { data, error: resetError } = await supabase.auth.resetPasswordForEmail(
+        email.trim(),
+        {
+          redirectTo: redirectTo,
+        }
+      );
+
+      if (resetError) {
+        showMessage({
+          message: "Error",
+          description: resetError.message,
+          type: "danger",
+          icon: "danger",
+        });
+        return { ok: false };
+      }
+
+      setSuccess(true);
+      showMessage({
+        message: "Success!",
+        description: "Reset link sent! Please check your email.",
+        type: "success",
+        icon: "success",
+        duration: 4000,
+      });
+
+      setTimeout(() => {
+        setSuccess(false);
+        router.replace("/(auth)/login");
+      }, 3000);
+
+      return { ok: true };
+    } catch (err: any) {
+      showMessage({
+        message: "Error",
+        description: err.message || "An unexpected error occurred.",
+        type: "danger",
+        icon: "danger",
+      });
+      return { ok: false };
+    } finally {
+      setLoading(false);
     }
   };
-  return { handleForgotPassword };
+  return { handleForgotPassword, loading, error, success };
 };

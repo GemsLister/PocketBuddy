@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 type UserProfile = {
   name: string;
   email: string;
+  bio?: string;
   avatarUrl?: string;
 };
 
@@ -31,7 +32,7 @@ export const useProfile = () => {
         // Fetch the user's profile from the profiles table
         const { data, error: profileError } = await supabase
           .from("profiles")
-          .select("username, email")
+          .select("username, email, bio, avatar_url")
           .eq("id", authUser.id)
           .single();
 
@@ -43,7 +44,10 @@ export const useProfile = () => {
           setUser({
             name: data.username,
             email: data.email,
+            bio: data.bio ?? "",
+            avatarUrl: data.avatar_url ?? undefined,
           });
+
           setError(null);
         }
       } catch (err) {

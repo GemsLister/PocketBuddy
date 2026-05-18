@@ -9,6 +9,7 @@ type AuthContainerProps = {
   text: string;
   screenTitle: string;
   onPress: () => void;
+  loading?: boolean;
 };
 export default function AuthContainer({
   children,
@@ -16,6 +17,7 @@ export default function AuthContainer({
   text,
   screenTitle,
   onPress,
+  loading = false,
 }: AuthContainerProps) {
   return (
     <SafeAreaView
@@ -50,8 +52,12 @@ export default function AuthContainer({
               {text}
             </Text>
           </View>
+
           {children}
-          <PrimaryButton text={label} onPress={onPress} />
+          <PrimaryButton
+            text={loading ? "Processing..." : label}
+            onPress={onPress}
+          />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

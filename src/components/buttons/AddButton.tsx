@@ -7,7 +7,7 @@ export default function AddButton() {
   return (
     <Link href={"/(transaction)/income"} asChild>
       <TouchableOpacity
-        className="rounded-[50] bg-leaf"
+        className="bg-moss justify-center items-center shadow-md shadow-black rounded-[50]"
         style={{ padding: ms(5, 0.5) }}
       >
         <Ionicons name="add-outline" size={ms(30, 0.5)} color={"white"} />

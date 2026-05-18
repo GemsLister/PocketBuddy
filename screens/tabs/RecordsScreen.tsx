@@ -128,8 +128,29 @@ export default function RecordsScreen() {
         }
 
         const mapped: Transaction[] = (data ?? []).map((row: any) => {
-          // Guardrail para sa imong case: naa'y expense categories nga naay maling `type` = "income" sa DB.
-          // Optional: temp fix ni hangtod ma-correct ang data sa Supabase.
+          // Define category to icon mapping
+          const categoryIconMap: Record<string, keyof typeof Ionicons.glyphMap> = {
+            // Expenses
+            Foods: "fast-food-outline",
+            Transport: "bus-outline",
+            Bills: "water-outline",
+            Shopping: "cart-outline",
+            Health: "medkit-outline",
+            "Self-Care": "body-outline",
+            // Income
+            Salary: "cash-outline",
+            Freelance: "briefcase-outline",
+            Business: "trending-up-outline",
+            Other: "ellipsis-horizontal-outline",
+            // Transfers/Others
+            Savings: "wallet-outline",
+            Investment: "stats-chart-outline",
+            "Bank Card": "card-outline",
+            Family: "people-outline",
+            Emergency: "shield-checkmark-outline",
+            "Digital Wallet": "phone-portrait-outline",
+          };
+
           const expenseCategories = new Set([
             "Foods",
             "Transport",
@@ -159,9 +180,8 @@ export default function RecordsScreen() {
             description: row.note ?? undefined,
             date: row.transaction_date,
             icon:
-              normalizedType === "income"
-                ? "cash-outline"
-                : "fast-food-outline",
+              categoryIconMap[category] ||
+              (normalizedType === "income" ? "cash-outline" : "fast-food-outline"),
           };
         });
 

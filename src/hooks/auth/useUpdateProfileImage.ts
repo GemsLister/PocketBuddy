@@ -70,6 +70,13 @@ export const useUpdateProfileImage = () => {
         throw updateError;
       }
 
+      // UPDATE AUTH METADATA: I-sync ang bag-ong avatar sa Auth session
+      await supabase.auth.updateUser({
+        data: {
+          avatar_url: avatarUrl
+        }
+      });
+
       showMessage({
         message: "Success",
         description: "Profile picture updated successfully!",

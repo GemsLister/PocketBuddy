@@ -4,13 +4,14 @@ import { useForgotPassword } from "@/src/hooks/auth/useForgotPassword";
 import { useState } from "react";
 export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState("");
-  const { handleForgotPassword } = useForgotPassword();
+  const { handleForgotPassword, loading, error, success } = useForgotPassword();
   return (
     <AuthContainer
       label="Continue"
       screenTitle="Recover your account"
       text="Enter your email address"
       onPress={() => handleForgotPassword(email)}
+      loading={loading}
     >
       <TextInputs
         placeholder="Email"

@@ -19,7 +19,6 @@ const filters: FilterChip[] = [
   { id: "all", label: "All" },
   { id: "income", label: "Income" },
   { id: "expense", label: "Expense" },
-  { id: "transfer", label: "Transfer" },
 ];
 
 export default function FilterBar({

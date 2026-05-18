@@ -17,7 +17,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ms, vs } from "react-native-size-matters";
 
 // ---------- Welcome card shown when chat is empty ----------
-function WelcomeCard() {
+function WelcomeCard({
+  onSuggestionPress,
+}: {
+  onSuggestionPress: (text: string) => void;
+}) {
   return (
     <View
       className="items-center justify-center flex-1"
@@ -57,8 +61,10 @@ function WelcomeCard() {
           "What's my biggest expense category?",
           "Give me a savings tip",
         ].map((suggestion) => (
-          <View
+          <TouchableOpacity
             key={suggestion}
+            activeOpacity={0.7}
+            onPress={() => onSuggestionPress(suggestion)}
             className="bg-white"
             style={{
               paddingHorizontal: ms(14, 0.5),
@@ -74,7 +80,7 @@ function WelcomeCard() {
             >
               {suggestion}
             </Text>
-          </View>
+          </TouchableOpacity>
         ))}
       </View>
     </View>
@@ -83,8 +89,17 @@ function WelcomeCard() {
 
 // ---------- Main Screen ----------
 export default function ChatScreen() {
-  const { messages, isLoading, isSending, error, sendMessage, clearChat } =
-    useChat();
+  const {
+    messages,
+    isLoading,
+    isSending,
+    error,
+    rateLimitSeconds,
+    sendMessage,
+    clearChat,
+  } = useChat();
+
+  const isRateLimited = rateLimitSeconds !== null && rateLimitSeconds > 0;
   const flatListRef = useRef<FlatList>(null);
 
   const formatTime = (dateStr: string) => {
@@ -162,7 +177,7 @@ export default function ChatScreen() {
             </Text>
           </View>
         ) : messages.length === 0 ? (
-          <WelcomeCard />
+          <WelcomeCard onSuggestionPress={sendMessage} />
         ) : (
           <FlatList
             ref={flatListRef}
@@ -191,8 +206,37 @@ export default function ChatScreen() {
           />
         )}
 
-        {/* Error banner */}
-        {error && (
+        {/* Rate limit countdown banner */}
+        {isRateLimited && (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: ms(8, 0.3),
+              paddingHorizontal: ms(16, 0.5),
+              paddingVertical: vs(10),
+              backgroundColor: "#FEF3C7",
+              borderTopWidth: 1,
+              borderTopColor: "#FDE68A",
+            }}
+          >
+            <Ionicons
+              name="time-outline"
+              size={ms(16, 0.5)}
+              color="#D97706"
+            />
+            <Text
+              className="font-nunito-semibold text-center"
+              style={{ fontSize: ms(13, 0.5), color: "#92400E" }}
+            >
+              Quota reached · Try again in {rateLimitSeconds}s
+            </Text>
+          </View>
+        )}
+
+        {/* Generic error banner (non-rate-limit errors only) */}
+        {error && !isRateLimited && (
           <View
             className="bg-red-50"
             style={{
@@ -210,7 +254,10 @@ export default function ChatScreen() {
         )}
 
         {/* Input */}
-        <ChatInput onSend={sendMessage} disabled={isSending} />
+        <ChatInput
+          onSend={sendMessage}
+          disabled={isSending || isRateLimited}
+        />
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
